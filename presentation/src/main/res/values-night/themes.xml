@@ -3,5 +3,10 @@
     <style name="Base.Theme.CryptoCurrencyApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="badgeStyle">@style/CustomBadge</item>
+    </style>
+
+    <style name="CustomBadge" parent="@style/Widget.MaterialComponents.Badge">
+        <item name="backgroundColor">@color/yellow</item>
     </style>
 </resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.AppCompat" parent="Theme.Material3.DayNight.NoActionBar">
+
+        <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
+        <item name="colorPrimary">@color/yellow</item>
+        <item name="colorOnPrimary">@color/yellow</item>
+
+    </style>
+
+</resources>
