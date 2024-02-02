@@ -3,5 +3,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="charcoal">#101820</color>
-    <color name="yellow">#FEE715</color>
+    <color name="yellow">#fde30a</color>
+    <color name="dark_gray">#212121</color>
+    <color name="gray">#2b2b2b</color>
+    <color name="red">#ef4b56</color>
+    <color name="blue">#ef4b56</color>
+    <color name="light_gray">#a0a0a0</color>
 </resources>
