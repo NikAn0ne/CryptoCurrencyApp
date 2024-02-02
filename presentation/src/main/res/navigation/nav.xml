@@ -20,4 +20,5 @@
         android:name="com.example.cryptocurrencyapp.fragment.WatchListFragment"
         android:label="fragment_watch_list"
         tools:layout="@layout/fragment_watch_list" />
+
 </navigation>
