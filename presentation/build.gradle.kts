@@ -39,6 +39,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":data"))
+    implementation(project(":domain"))
 
     implementation ("com.github.ibrahimsn98:SmoothBottomBar:1.7.9")
 
