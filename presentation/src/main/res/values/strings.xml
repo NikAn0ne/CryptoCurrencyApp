@@ -8,10 +8,17 @@
     <string name="not_found">Not found any data</string>
     <string name="search_hint">Search Crypto Currency</string>
     <string name="empty_watchlist">Your list is empty</string>
-    <string name="_1m">1 mounth</string>
+    <string name="_1m">1 month</string>
     <string name="_1w">1 week</string>
     <string name="_1d">1 day</string>
     <string name="_4h">4 hours</string>
     <string name="_1h">1 hour</string>
     <string name="_15m">15 min</string>
+    <string name="percent_change_30d">Percent Change 30d</string>
+    <string name="percent_change_7d">Percent Change 7d</string>
+    <string name="total_supply">Total Supply</string>
+    <string name="dominance">Dominance</string>
+    <string name="Volume_24h">Volume 24h</string>
+    <string name="market_cap">Market Cap</string>
+    <string name="name">Name</string>
 </resources>
