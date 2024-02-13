@@ -9,7 +9,11 @@
         android:id="@+id/homeFragment"
         android:name="com.example.cryptocurrencyapp.fragment.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/marketFragment"
         android:name="com.example.cryptocurrencyapp.fragment.MarketFragment"
@@ -20,5 +24,15 @@
         android:name="com.example.cryptocurrencyapp.fragment.WatchListFragment"
         android:label="fragment_watch_list"
         tools:layout="@layout/fragment_watch_list" />
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.example.cryptocurrencyapp.fragment.DetailsFragment"
+        android:label="DetailsFragment" >
+        <argument
+            android:name="data"
+            app:argType="com.example.domain.model.CryptoCurrency"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 
 </navigation>
