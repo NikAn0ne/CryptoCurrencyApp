@@ -7,11 +7,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatButton
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.cryptocurrencyapp.R
+import com.example.cryptocurrencyapp.adapter.TopMarketAdapter
 import com.example.cryptocurrencyapp.databinding.FragmentDetailsBinding
+import com.example.data.API.ApiInterface
+import com.example.data.API.ApiUtilities
 import com.example.domain.model.CryptoCurrency
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class DetailsFragment : Fragment() {
@@ -34,6 +41,8 @@ class DetailsFragment : Fragment() {
         loadChart(data)
 
         setButtonOnClick(data)
+
+        getDetailsList(data)
 
         return binding.root
     }
@@ -138,6 +147,38 @@ class DetailsFragment : Fragment() {
 
         }
 
+
+    }
+
+    private fun getDetailsList(item : CryptoCurrency) {
+
+        binding.detailNameTextView.text = item.name
+        binding.detailMarketCapTextView.text = String.format("$%.0002f", item.quotes[0].marketCap)
+        binding.detailVolume.text = String.format("$%.0002f", item.quotes[0].volume24h)
+        binding.detailDominance.text = item.quotes[0].dominance.toString()
+
+        if (item.quotes[0].percentChange7d >0){
+
+            binding.detailPercentChange7d.setTextColor(resources.getColor(R.color.green))
+            binding.detailPercentChange7d.text = "+ ${String.format("%.02f", item.quotes[0].percentChange7d)}%"
+        }
+        else{
+            binding.detailPercentChange7d.setTextColor(resources.getColor(R.color.red))
+            binding.detailPercentChange7d.text = " ${String.format("%.02f", item.quotes[0].percentChange7d)}%"
+
+        }
+
+        if (item.quotes[0].percentChange30d >0){
+
+            binding.detailPercentChange30d.setTextColor(resources.getColor(R.color.green))
+            binding.detailPercentChange30d.text = "+ ${String.format("%.02f", item.quotes[0].percentChange30d)}%"
+        }
+        else{
+            binding.detailPercentChange30d.setTextColor(resources.getColor(R.color.red))
+            binding.detailPercentChange30d.text = " ${String.format("%.02f", item.quotes[0].percentChange30d)}%"
+
+        }
+        binding.detailTotalSupplyTextView.text = item.totalSupply.toString()
 
     }
 
