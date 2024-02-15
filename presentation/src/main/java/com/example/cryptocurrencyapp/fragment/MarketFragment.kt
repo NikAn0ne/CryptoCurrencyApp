@@ -9,7 +9,6 @@ import android.view.View
 import android.view.View.GONE
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
-import com.example.cryptocurrencyapp.R
 import com.example.cryptocurrencyapp.adapter.MarketAdapter
 import com.example.cryptocurrencyapp.databinding.FragmentMarketBinding
 import com.example.data.API.ApiInterface
@@ -22,7 +21,7 @@ import kotlinx.coroutines.withContext
 
 class MarketFragment : Fragment() {
 
-    lateinit var binding: FragmentMarketBinding
+    private lateinit var binding: FragmentMarketBinding
 
     private lateinit var list: List<CryptoCurrency>
     private lateinit var adapter: MarketAdapter
@@ -38,7 +37,7 @@ class MarketFragment : Fragment() {
 
         list = listOf()
 
-        adapter = MarketAdapter(requireContext(), list)
+        adapter = MarketAdapter(requireContext(), list, "market")
         binding.currencyRecyclerView.adapter = adapter
 
         lifecycleScope.launch(Dispatchers.IO){
@@ -57,7 +56,7 @@ class MarketFragment : Fragment() {
 
 
 
-
+        searchCoin()
 
         return binding.root
     }

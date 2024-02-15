@@ -10,9 +10,10 @@ import com.bumptech.glide.Glide
 import com.example.cryptocurrencyapp.R
 import com.example.cryptocurrencyapp.databinding.CurrencyItemLayoutBinding
 import com.example.cryptocurrencyapp.fragment.HomeFragmentDirections
+import com.example.cryptocurrencyapp.fragment.MarketFragmentDirections
 import com.example.domain.model.CryptoCurrency
 
-class MarketAdapter(var context: Context, var list: List<CryptoCurrency>) : RecyclerView.Adapter<MarketAdapter.MarketViewHolder>() {
+class MarketAdapter(var context: Context, var list: List<CryptoCurrency>, var type: String) : RecyclerView.Adapter<MarketAdapter.MarketViewHolder>() {
     inner  class MarketViewHolder(view: View) : RecyclerView.ViewHolder(view){
         var binding = CurrencyItemLayoutBinding.bind(view)
     }
@@ -59,9 +60,17 @@ class MarketAdapter(var context: Context, var list: List<CryptoCurrency>) : Recy
         }
 
         holder.itemView.setOnClickListener {
-            findNavController(it).navigate(
-                HomeFragmentDirections.actionHomeFragmentToDetailsFragment().setData(item)
-            )
+
+            if (type == "home") {
+                findNavController(it).navigate(
+                    HomeFragmentDirections.actionHomeFragmentToDetailsFragment().setData(item)
+                )
+            }
+            else if (type == "market"){
+                findNavController(it).navigate(
+                    MarketFragmentDirections.actionMarketFragmentToDetailsFragment().setData(item)
+                )
+            }
         }
 
     }
