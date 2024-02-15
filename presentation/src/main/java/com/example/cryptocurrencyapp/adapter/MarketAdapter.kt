@@ -21,6 +21,11 @@ class MarketAdapter(var context: Context, var list: List<CryptoCurrency>) : Recy
         return MarketViewHolder(LayoutInflater.from(context).inflate(R.layout.currency_item_layout, parent , false))
     }
 
+    fun updateData(dataItem: List<CryptoCurrency>){
+        list = dataItem
+        notifyDataSetChanged()
+    }
+
     override fun getItemCount(): Int {
         return list.size
     }
