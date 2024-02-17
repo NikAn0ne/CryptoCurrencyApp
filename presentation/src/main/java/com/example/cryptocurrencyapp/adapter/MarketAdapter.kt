@@ -14,7 +14,7 @@ import com.example.cryptocurrencyapp.fragment.MarketFragmentDirections
 import com.example.cryptocurrencyapp.fragment.WatchListFragmentDirections
 import com.example.domain.model.CryptoCurrency
 
-class MarketAdapter(var context: Context, var list: List<CryptoCurrency>, var type: String) : RecyclerView.Adapter<MarketAdapter.MarketViewHolder>() {
+class MarketAdapter(private var context: Context, private var list: List<CryptoCurrency>, private var type: String) : RecyclerView.Adapter<MarketAdapter.MarketViewHolder>() {
     inner  class MarketViewHolder(view: View) : RecyclerView.ViewHolder(view){
         var binding = CurrencyItemLayoutBinding.bind(view)
     }

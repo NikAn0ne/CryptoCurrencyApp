@@ -19,14 +19,14 @@ import com.google.gson.reflect.TypeToken
 
 class DetailsFragment : Fragment() {
 
-     lateinit var binding: FragmentDetailsBinding
+     private lateinit var binding: FragmentDetailsBinding
 
      private val item: DetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentDetailsBinding.inflate(layoutInflater)
 
@@ -63,9 +63,9 @@ class DetailsFragment : Fragment() {
         binding.addWatchlistButton.setOnClickListener{
             watchListIsChecked =
                 if (!watchListIsChecked){
-                    if (!watchList!!.contains(data.symbol)){
+                    if (!watchList?.contains(data.symbol)!!){
 
-                        watchList!!.add(data.symbol)
+                        watchList?.add(data.symbol)
                     }
                     storeData()
                     binding.addWatchlistButton.setImageResource(R.drawable.ic_star)
@@ -75,7 +75,7 @@ class DetailsFragment : Fragment() {
                 }
             else{
                     binding.addWatchlistButton.setImageResource(R.drawable.ic_star_outline)
-                    watchList!!.remove(data.symbol)
+                    watchList?.remove(data.symbol)
                     storeData()
 
                 false
