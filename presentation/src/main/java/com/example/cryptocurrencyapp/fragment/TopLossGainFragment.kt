@@ -20,7 +20,7 @@ import java.util.Collections
 
 class TopLossGainFragment : Fragment() {
 
-    lateinit var binding: FragmentTopLossGainBinding
+    private lateinit var binding: FragmentTopLossGainBinding
 
 
     override fun onCreateView(

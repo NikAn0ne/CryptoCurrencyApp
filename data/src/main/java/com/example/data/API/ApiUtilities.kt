@@ -1,11 +1,10 @@
 package com.example.data.API
 
-import com.google.gson.Gson
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiUtilities {
-    fun getInstance() : Retrofit{
+    fun getInstance(): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://api.coinmarketcap.com/")
             .addConverterFactory(GsonConverterFactory.create())

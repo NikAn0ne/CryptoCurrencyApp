@@ -44,6 +44,7 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    //Placing tabLayout and connecting adapter
     private fun setTabLayout() {
         val adapter = TopLossGainPagerAdapter(this)
         binding.contentViewPager.adapter = adapter
@@ -76,6 +77,7 @@ class HomeFragment : Fragment() {
 
     }
 
+
     private fun getTopCurrencyList() {
 
             if (internet_connection()){
@@ -83,10 +85,12 @@ class HomeFragment : Fragment() {
                     val res =
                         ApiUtilities.getInstance().create(ApiInterface::class.java).getMarketData()
                     withContext(Dispatchers.Main) {
-                        binding.topCurrencyRecyclerView.adapter = TopMarketAdapter(
-                            requireContext(),
-                            res.body()!!.data.cryptoCurrencyList
-                        )
+                        binding.topCurrencyRecyclerView.adapter = res.body()?.data?.let {
+                            TopMarketAdapter(
+                                requireContext(),
+                                it.cryptoCurrencyList
+                            )
+                        }
                     }
                 }
             }

@@ -3,7 +3,6 @@ package com.example.domain.model
 import java.io.Serializable
 
 data class CryptoCurrency(
-    val auditInfoList: List<AuditInfo>,
     val badges: List<Int>,
     val circulatingSupply: Double,
     val cmcRank: Int,

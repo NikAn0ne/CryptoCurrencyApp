@@ -30,17 +30,20 @@ class DetailsFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentDetailsBinding.inflate(layoutInflater)
 
-        val data : CryptoCurrency = item.data!!
+        val data : CryptoCurrency? = item.data
 
-        setUpDetails(data)
+        if (data != null) {
+            setUpDetails(data)
 
-        loadChart(data)
+            loadChart(data)
 
-        setButtonOnClick(data)
+            setButtonOnClick(data)
 
-        getDetailsList(data)
+            getDetailsList(data)
 
-        addToWatchList(data)
+            addToWatchList(data)
+        }
+
 
         return binding.root
     }
