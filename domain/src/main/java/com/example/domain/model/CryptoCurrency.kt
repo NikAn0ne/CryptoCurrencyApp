@@ -3,24 +3,24 @@ package com.example.domain.model
 import java.io.Serializable
 
 data class CryptoCurrency(
-    val badges: List<Int>,
-    val circulatingSupply: Double,
-    val cmcRank: Int,
-    val dateAdded: String,
     val id: Int,
-    val isActive: Int,
-    val isAudited: Boolean,
-    val lastUpdated: String,
-    val marketPairCount: Int,
-    val maxSupply: Double,
     val name: String,
-    val platform: Platform,
-    val quotes: List<Quote>,
-    val selfReportedCirculatingSupply: Double,
-    val slug: String,
     val symbol: String,
-    val tags: List<String>,
-    val totalSupply: Double
+    val totalSupply: Double,
+    val quoteDominance: Double,
+    val quoteMarketCap: Double,
+    val percentChange1h: Double,
+    val percentChange1y: Double,
+    val percentChange24h: Double,
+    val percentChange30d: Double,
+    val percentChange60d: Double,
+    val percentChange7d: Double,
+    val percentChange90d: Double,
+    val price: Double,
+    val volume24h: Double
+
+
+
 )   : Serializable{
     override fun equals(other: Any?): Boolean {
         return super.equals(other)
