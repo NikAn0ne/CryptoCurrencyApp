@@ -1,8 +1,19 @@
 package com.example.domain.useCases
 
-class GetMarketDataUseCase {
+import com.example.domain.model.CryptoCurrency
+import com.example.domain.repository.MarketDataRepository
 
-    suspend fun getMarketData(){
+class GetMarketDataUseCase(
+    private val marketDataRep: MarketDataRepository
+) {
 
+    suspend fun getMarketData(): MutableList<CryptoCurrency>? {
+        val marketData = marketDataRep.getMarketData()
+
+        if (marketData.isNullOrEmpty()){
+            return null
+        }
+
+        return marketData
     }
 }
