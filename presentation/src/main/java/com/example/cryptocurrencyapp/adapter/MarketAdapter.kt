@@ -46,17 +46,17 @@ class MarketAdapter(private var context: Context, private var list: List<CryptoC
             .thumbnail(Glide.with(context).load(R.drawable.spinner))
             .into(holder.binding.currencyChartImageView)
 
-        holder.binding.currencyPriceTextView.text = "${String.format("$%.02f", item.quotes[0].price)}"
+        holder.binding.currencyPriceTextView.text = "${String.format("$%.02f", item.price)}"
 
 
-        if (item.quotes[0].percentChange24h >0){
+        if (item.percentChange24h >0){
 
             holder.binding.currencyChangeTextView.setTextColor(context.resources.getColor(R.color.green))
-            holder.binding.currencyChangeTextView.text = "+ ${String.format("%.02f", item.quotes[0].percentChange24h)}%"
+            holder.binding.currencyChangeTextView.text = "+ ${String.format("%.02f", item.percentChange24h)}%"
         }
         else{
             holder.binding.currencyChangeTextView.setTextColor(context.resources.getColor(R.color.red))
-            holder.binding.currencyChangeTextView.text = " ${String.format("%.02f", item.quotes[0].percentChange24h)}%"
+            holder.binding.currencyChangeTextView.text = " ${String.format("%.02f", item.percentChange24h)}%"
 
         }
 

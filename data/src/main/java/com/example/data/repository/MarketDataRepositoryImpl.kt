@@ -1,13 +1,12 @@
 package com.example.data.repository
 
 import com.example.data.API.ApiInterface
-import com.example.data.API.ApiUtilities
 import com.example.data.util.toDomain
 import com.example.domain.model.CryptoCurrency
 import com.example.domain.repository.MarketDataRepository
 import java.lang.RuntimeException
 
-class MarketDataReposiroryImpl(private val api: ApiInterface): MarketDataRepository {
+class MarketDataRepositoryImpl(private val api: ApiInterface): MarketDataRepository {
     override suspend fun getMarketData(): MutableList<CryptoCurrency>? {
         return runCatching {
             val res = api.getMarketData()

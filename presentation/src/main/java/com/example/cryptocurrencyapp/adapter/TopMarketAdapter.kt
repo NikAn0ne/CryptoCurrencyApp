@@ -36,14 +36,14 @@ class TopMarketAdapter(var context: Context, val list: List<CryptoCurrency>) : R
             .into(holder.binding.topCurrencyImageView)
 
 
-            if (item.quotes[0].percentChange24h >0){
+            if (item.percentChange24h >0){
 
                 holder.binding.topCurrencyChangeTextView.setTextColor(context.resources.getColor(R.color.green))
-                holder.binding.topCurrencyChangeTextView.text = "+ ${String.format("%.02f", item.quotes[0].percentChange24h)}%"
+                holder.binding.topCurrencyChangeTextView.text = "+ ${String.format("%.02f", item.percentChange24h)}%"
             }
         else{
                 holder.binding.topCurrencyChangeTextView.setTextColor(context.resources.getColor(R.color.red))
-                holder.binding.topCurrencyChangeTextView.text = " ${String.format("%.02f", item.quotes[0].percentChange24h)}%"
+                holder.binding.topCurrencyChangeTextView.text = " ${String.format("%.02f", item.percentChange24h)}%"
 
             }
 

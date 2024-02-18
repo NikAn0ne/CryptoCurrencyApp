@@ -188,18 +188,18 @@ class DetailsFragment : Fragment() {
             .thumbnail(Glide.with(requireContext()).load(R.drawable.spinner))
             .into(binding.detailImageView)
 
-        binding.detailPriceTextView.text = String.format("$%.02f", data.quotes[0].price)
+        binding.detailPriceTextView.text = String.format("$%.02f", data.price)
 
-        if (data.quotes[0].percentChange24h >0){
+        if (data.percentChange24h >0){
 
             binding.detailChangeTextView.setTextColor(requireContext().resources.getColor(R.color.green))
             binding.detailChangeImageView.setImageResource(R.drawable.ic_caret_up)
-            binding.detailChangeTextView.text = "+ ${String.format("%.02f", data.quotes[0].percentChange24h)}%"
+            binding.detailChangeTextView.text = "+ ${String.format("%.02f", data.percentChange24h)}%"
         }
         else{
             binding.detailChangeTextView.setTextColor(requireContext().resources.getColor(R.color.red))
             binding.detailChangeImageView.setImageResource(R.drawable.ic_caret_down)
-            binding.detailChangeTextView.text = " ${String.format("%.02f", data.quotes[0].percentChange24h)}%"
+            binding.detailChangeTextView.text = " ${String.format("%.02f", data.percentChange24h)}%"
 
         }
 
@@ -209,29 +209,29 @@ class DetailsFragment : Fragment() {
     private fun getDetailsList(item : CryptoCurrency) {
 
         binding.detailNameTextView.text = item.name
-        binding.detailMarketCapTextView.text = String.format("$%.0002f", item.quotes[0].marketCap)
-        binding.detailVolume.text = String.format("$%.0002f", item.quotes[0].volume24h)
-        binding.detailDominance.text = item.quotes[0].dominance.toString()
+        binding.detailMarketCapTextView.text = String.format("$%.0002f", item.quoteMarketCap)
+        binding.detailVolume.text = String.format("$%.0002f", item.volume24h)
+        binding.detailDominance.text = item.quoteDominance.toString()
 
-        if (item.quotes[0].percentChange7d >0){
+        if (item.percentChange7d >0){
 
             binding.detailPercentChange7d.setTextColor(resources.getColor(R.color.green))
-            binding.detailPercentChange7d.text = "+ ${String.format("%.02f", item.quotes[0].percentChange7d)}%"
+            binding.detailPercentChange7d.text = "+ ${String.format("%.02f", item.percentChange7d)}%"
         }
         else{
             binding.detailPercentChange7d.setTextColor(resources.getColor(R.color.red))
-            binding.detailPercentChange7d.text = " ${String.format("%.02f", item.quotes[0].percentChange7d)}%"
+            binding.detailPercentChange7d.text = " ${String.format("%.02f", item.percentChange7d)}%"
 
         }
 
-        if (item.quotes[0].percentChange30d >0){
+        if (item.percentChange30d >0){
 
             binding.detailPercentChange30d.setTextColor(resources.getColor(R.color.green))
-            binding.detailPercentChange30d.text = "+ ${String.format("%.02f", item.quotes[0].percentChange30d)}%"
+            binding.detailPercentChange30d.text = "+ ${String.format("%.02f", item.percentChange30d)}%"
         }
         else{
             binding.detailPercentChange30d.setTextColor(resources.getColor(R.color.red))
-            binding.detailPercentChange30d.text = " ${String.format("%.02f", item.quotes[0].percentChange30d)}%"
+            binding.detailPercentChange30d.text = " ${String.format("%.02f", item.percentChange30d)}%"
 
         }
         binding.detailTotalSupplyTextView.text = item.totalSupply.toString()
