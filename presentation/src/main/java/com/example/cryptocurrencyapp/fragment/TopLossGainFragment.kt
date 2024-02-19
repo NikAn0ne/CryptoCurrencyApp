@@ -67,7 +67,7 @@ class TopLossGainFragment : Fragment() {
                         list.clear()
                         for (i in 0..9)
                         {
-                            (dataItem?.get(0) ?: null)?.let { list.add(it) }
+                            list.add(dataItem!![i])
                         }
 
                         binding.topGainLoseRecyclerView.adapter = MarketAdapter(
