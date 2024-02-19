@@ -10,4 +10,7 @@ object ApiUtilities {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
+    val api: ApiInterface by lazy {
+        getInstance().create(ApiInterface::class.java)
+    }
 }
