@@ -14,12 +14,14 @@ import com.example.cryptocurrencyapp.databinding.FragmentWatchListBinding
 import com.example.data.API.ApiInterface
 import com.example.data.API.ApiUtilities
 import com.example.domain.model.CryptoCurrency
+import com.example.domain.useCases.GetMarketDataUseCase
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+private lateinit var  getMarketDataUseCase : GetMarketDataUseCase
 
 class WatchListFragment : Fragment() {
 
@@ -48,7 +50,7 @@ class WatchListFragment : Fragment() {
                     watchListItem.clear()
 
                     for (watchData in watchList){
-                        for (item in res.body()!!.data.cryptoCurrencyList){
+                        for (item in getMarketDataUseCase.getMarketData()!!){
                             if (watchData == item.symbol)
                             {
                                 watchListItem.add(item)

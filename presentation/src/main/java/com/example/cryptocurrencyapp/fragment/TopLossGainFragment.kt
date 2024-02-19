@@ -11,7 +11,9 @@ import com.example.cryptocurrencyapp.adapter.MarketAdapter
 import com.example.cryptocurrencyapp.databinding.FragmentTopLossGainBinding
 import com.example.data.API.ApiInterface
 import com.example.data.API.ApiUtilities
+import com.example.data.repository.MarketDataRepositoryImpl
 import com.example.domain.model.CryptoCurrency
+import com.example.domain.useCases.GetMarketDataUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -23,6 +25,7 @@ class TopLossGainFragment : Fragment() {
     private lateinit var binding: FragmentTopLossGainBinding
 
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,13 +33,17 @@ class TopLossGainFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentTopLossGainBinding.inflate(layoutInflater)
 
-        getMarketData()
+        val repository = MarketDataRepositoryImpl(ApiUtilities.api)
+
+        val  getMarketDataUseCase = GetMarketDataUseCase(repository)
+
+        getMarketData(getMarketDataUseCase)
 
 
         return binding.root
     }
 
-    private fun getMarketData() {
+    private fun getMarketData(getMarketDataUseCase: GetMarketDataUseCase) {
 
         val position = requireArguments().getInt("position")
 
@@ -45,11 +52,11 @@ class TopLossGainFragment : Fragment() {
 
             if (res.body() != null){
                 withContext(Dispatchers.Main){
-                    val dataItem = res.body()!!.data.cryptoCurrencyList
+                    val dataItem = getMarketDataUseCase.getMarketData()
 
                     Collections.sort(dataItem){
-                        o1,o2 -> (o2.quotes[0].percentChange24h.toInt())
-                        .compareTo(o1.quotes[0].percentChange24h.toInt())
+                        o1,o2 -> (o2.percentChange24h.toInt())
+                        .compareTo(o1.percentChange24h.toInt())
                     }
 
 
@@ -60,7 +67,7 @@ class TopLossGainFragment : Fragment() {
                         list.clear()
                         for (i in 0..9)
                         {
-                            list.add(dataItem[i])
+                            (dataItem?.get(0) ?: null)?.let { list.add(it) }
                         }
 
                         binding.topGainLoseRecyclerView.adapter = MarketAdapter(
@@ -74,7 +81,7 @@ class TopLossGainFragment : Fragment() {
                         list.clear()
                         for (i in 0..9)
                         {
-                            list.add(dataItem[dataItem.size - 1 - i])
+                            (dataItem?.get(dataItem.size - 1 - i) ?: null)?.let { list.add(it) }
                         }
 
                         binding.topGainLoseRecyclerView.adapter = MarketAdapter(

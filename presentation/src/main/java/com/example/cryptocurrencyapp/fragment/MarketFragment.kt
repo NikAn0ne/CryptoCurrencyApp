@@ -14,7 +14,9 @@ import com.example.cryptocurrencyapp.adapter.MarketAdapter
 import com.example.cryptocurrencyapp.databinding.FragmentMarketBinding
 import com.example.data.API.ApiInterface
 import com.example.data.API.ApiUtilities
+import com.example.data.repository.MarketDataRepositoryImpl
 import com.example.domain.model.CryptoCurrency
+import com.example.domain.useCases.GetMarketDataUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -37,6 +39,10 @@ class MarketFragment : Fragment() {
 
         binding = FragmentMarketBinding.inflate(layoutInflater)
 
+        val repository = MarketDataRepositoryImpl(ApiUtilities.api)
+
+        val  getMarketDataUseCase = GetMarketDataUseCase(repository)
+
         list = listOf()
 
         adapter = MarketAdapter(requireContext(), list, "market")
@@ -48,7 +54,7 @@ class MarketFragment : Fragment() {
             if(res.body() != null)
             {
                 withContext(Dispatchers.Main){
-                    list = res.body()!!.data.cryptoCurrencyList
+                    list = getMarketDataUseCase.getMarketData()!!
 
                     adapter.updateData(list)
                     binding.spinKitView.visibility = GONE

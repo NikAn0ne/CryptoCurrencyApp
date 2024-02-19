@@ -7,7 +7,7 @@ class GetMarketDataUseCase(
     private val marketDataRep: MarketDataRepository
 ) {
 
-    suspend fun getMarketData(): MutableList<CryptoCurrency>? {
+    suspend fun getMarketData(): List<CryptoCurrency>? {
         val marketData = marketDataRep.getMarketData()
 
         if (marketData.isNullOrEmpty()){

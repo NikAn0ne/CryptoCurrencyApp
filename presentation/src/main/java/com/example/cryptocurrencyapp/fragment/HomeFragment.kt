@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.provider.CalendarContract.Colors
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -19,6 +18,8 @@ import com.example.cryptocurrencyapp.adapter.TopMarketAdapter
 import com.example.cryptocurrencyapp.databinding.FragmentHomeBinding
 import com.example.data.API.ApiInterface
 import com.example.data.API.ApiUtilities
+import com.example.data.repository.MarketDataRepositoryImpl
+import com.example.domain.useCases.GetMarketDataUseCase
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +31,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,7 +39,11 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
-        getTopCurrencyList()
+        val repository = MarketDataRepositoryImpl(ApiUtilities.api)
+
+        val getMarketDataUseCase = GetMarketDataUseCase(repository)
+
+        getTopCurrencyList(getMarketDataUseCase)
 
         setTabLayout()
 
@@ -49,26 +55,24 @@ class HomeFragment : Fragment() {
         val adapter = TopLossGainPagerAdapter(this)
         binding.contentViewPager.adapter = adapter
 
-        binding.contentViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+        binding.contentViewPager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                if (position == 0){
+                if (position == 0) {
                     binding.topGainIndicator.visibility = VISIBLE
                     binding.topLoseIndicator.visibility = GONE
-                }
-                else{
+                } else {
                     binding.topGainIndicator.visibility = GONE
                     binding.topGainIndicator.visibility = VISIBLE
                 }
             }
         })
 
-        TabLayoutMediator(binding.tabLayout, binding.contentViewPager){
-            tab, position ->
-            val title = if (position == 0){
+        TabLayoutMediator(binding.tabLayout, binding.contentViewPager) { tab, position ->
+            val title = if (position == 0) {
                 "Лидеры роста "
-            }
-            else {
+            } else {
                 "Лидеры падения"
             }
             tab.text = title
@@ -78,37 +82,31 @@ class HomeFragment : Fragment() {
     }
 
 
-    private fun getTopCurrencyList() {
+    private fun getTopCurrencyList(getMarketDataUseCase: GetMarketDataUseCase) {
 
-            if (internet_connection()){
-                lifecycleScope.launch(Dispatchers.IO) {
-                    val res =
-                        ApiUtilities.getInstance().create(ApiInterface::class.java).getMarketData()
-                    withContext(Dispatchers.Main) {
-                        binding.topCurrencyRecyclerView.adapter = res.body()?.data?.let {
-                            TopMarketAdapter(
-                                requireContext(),
-                                it.cryptoCurrencyList
-                            )
-                        }
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            withContext(Dispatchers.Main) {
+                binding.topCurrencyRecyclerView.adapter =
+                    getMarketDataUseCase.getMarketData()?.let {
+                        TopMarketAdapter(
+                            requireContext(), it
+                        )
                     }
-                }
             }
-            else{
+        }
+
+        /*else{
                 val snackbar: Snackbar = Snackbar.make(requireView(),"No Internet Connection", Snackbar.LENGTH_SHORT)
 
                 snackbar.setActionTextColor(Color.BLACK)
                 snackbar.setAction(R.string.try_again, View.OnClickListener {
                 }).show()
             }
+            }*/
 
 
-
-
-
-    }
-
-    fun internet_connection(): Boolean {
+        /* fun internet_connection(): Boolean {
         //Check if connected to internet, output accordingly
         val cm =
             context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -116,7 +114,12 @@ class HomeFragment : Fragment() {
         return activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting
     }
+*/
 
-
-
+    }
 }
+
+
+
+
+
