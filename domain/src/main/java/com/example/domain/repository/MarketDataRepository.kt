@@ -1,7 +1,7 @@
 package com.example.domain.repository
 
-import com.example.domain.model.CryptoCurrency
+import com.example.domain.model.CryptoCurrencyData
 
 interface MarketDataRepository {
-    suspend fun getMarketData(): MutableList<CryptoCurrency>?
+    suspend fun getMarketData(): MutableList<CryptoCurrencyData>?
 }

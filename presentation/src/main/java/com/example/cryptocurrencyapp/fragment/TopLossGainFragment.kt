@@ -12,7 +12,7 @@ import com.example.cryptocurrencyapp.databinding.FragmentTopLossGainBinding
 import com.example.data.API.ApiInterface
 import com.example.data.API.ApiUtilities
 import com.example.data.repository.MarketDataRepositoryImpl
-import com.example.domain.model.CryptoCurrency
+import com.example.domain.model.CryptoCurrencyData
 import com.example.domain.useCases.GetMarketDataUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -61,7 +61,7 @@ class TopLossGainFragment : Fragment() {
 
 
                     binding.spinKitView.visibility = GONE
-                    val list = ArrayList<CryptoCurrency>()
+                    val list = ArrayList<CryptoCurrencyData>()
 
                     if (position == 0){
                         list.clear()

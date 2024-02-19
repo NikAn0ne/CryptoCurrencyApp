@@ -38,7 +38,7 @@
         android:label="DetailsFragment" >
         <argument
             android:name="data"
-            app:argType="com.example.domain.model.CryptoCurrency"
+            app:argType="com.example.domain.model.CryptoCurrencyData"
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>

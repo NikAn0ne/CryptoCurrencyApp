@@ -15,7 +15,7 @@ import com.example.cryptocurrencyapp.databinding.FragmentMarketBinding
 import com.example.data.API.ApiInterface
 import com.example.data.API.ApiUtilities
 import com.example.data.repository.MarketDataRepositoryImpl
-import com.example.domain.model.CryptoCurrency
+import com.example.domain.model.CryptoCurrencyData
 import com.example.domain.useCases.GetMarketDataUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,7 +27,7 @@ class MarketFragment : Fragment() {
 
     private lateinit var binding: FragmentMarketBinding
 
-    private lateinit var list: List<CryptoCurrency>
+    private lateinit var list: List<CryptoCurrencyData>
     private lateinit var adapter: MarketAdapter
 
 
@@ -89,7 +89,7 @@ class MarketFragment : Fragment() {
     }
 
     private fun updateRecyclerView(){
-        val data = ArrayList<CryptoCurrency>()
+        val data = ArrayList<CryptoCurrencyData>()
 
         for (item in list){
             val coinName = item.name.lowercase(Locale.getDefault())

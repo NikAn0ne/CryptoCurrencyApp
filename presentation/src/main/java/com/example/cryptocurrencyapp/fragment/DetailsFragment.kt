@@ -12,7 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.cryptocurrencyapp.R
 import com.example.cryptocurrencyapp.databinding.FragmentDetailsBinding
-import com.example.domain.model.CryptoCurrency
+import com.example.domain.model.CryptoCurrencyData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -30,7 +30,7 @@ class DetailsFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentDetailsBinding.inflate(layoutInflater)
 
-        val data : CryptoCurrency? = item.data
+        val data : CryptoCurrencyData? = item.data
 
         if (data != null) {
             setUpDetails(data)
@@ -51,7 +51,7 @@ class DetailsFragment : Fragment() {
     var watchList: ArrayList<String>? = null
     var watchListIsChecked = false
 
-    private fun addToWatchList(data: CryptoCurrency) {
+    private fun addToWatchList(data: CryptoCurrencyData) {
         readData()
 
         watchListIsChecked = if (watchList!!.contains(data.symbol)){
@@ -103,7 +103,7 @@ class DetailsFragment : Fragment() {
         watchList = gson.fromJson(json, type)
     }
 
-    private fun setButtonOnClick(item: CryptoCurrency) {
+    private fun setButtonOnClick(item: CryptoCurrencyData) {
         val oneMonth = binding.button
         val oneWeek = binding.button1
         val oneDay = binding.button2
@@ -133,7 +133,7 @@ class DetailsFragment : Fragment() {
     private fun loadChartData(
         it: View?,
         s: String,
-        item: CryptoCurrency,
+        item: CryptoCurrencyData,
         oneDay: AppCompatButton,
         oneMonth: AppCompatButton,
         oneWeek: AppCompatButton,
@@ -169,7 +169,7 @@ class DetailsFragment : Fragment() {
         oneHour.background = null
     }
 
-    private fun loadChart(item: CryptoCurrency) {
+    private fun loadChart(item: CryptoCurrencyData) {
         binding.detaillChartWebView.settings.javaScriptEnabled = true
         binding.detaillChartWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
 
@@ -181,7 +181,7 @@ class DetailsFragment : Fragment() {
         )
     }
 
-    private fun setUpDetails(data: CryptoCurrency) {
+    private fun setUpDetails(data: CryptoCurrencyData) {
         binding.detailSymbolTextView.text = data.symbol
 
         Glide.with(requireContext()).load("https://s2.coinmarketcap.com/static/img/coins/64x64/" + data.id + ".png")
@@ -206,7 +206,7 @@ class DetailsFragment : Fragment() {
 
     }
 
-    private fun getDetailsList(item : CryptoCurrency) {
+    private fun getDetailsList(item : CryptoCurrencyData) {
 
         binding.detailNameTextView.text = item.name
         binding.detailMarketCapTextView.text = String.format("$%.0002f", item.quoteMarketCap)

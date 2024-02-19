@@ -8,12 +8,11 @@ import android.view.View
 import android.view.View.GONE
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
-import com.example.cryptocurrencyapp.R
 import com.example.cryptocurrencyapp.adapter.MarketAdapter
 import com.example.cryptocurrencyapp.databinding.FragmentWatchListBinding
 import com.example.data.API.ApiInterface
 import com.example.data.API.ApiUtilities
-import com.example.domain.model.CryptoCurrency
+import com.example.domain.model.CryptoCurrencyData
 import com.example.domain.useCases.GetMarketDataUseCase
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -27,7 +26,7 @@ class WatchListFragment : Fragment() {
 
     private lateinit var binding: FragmentWatchListBinding
     private lateinit var watchList: ArrayList<String>
-    private lateinit var watchListItem: ArrayList<CryptoCurrency>
+    private lateinit var watchListItem: ArrayList<CryptoCurrencyData>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

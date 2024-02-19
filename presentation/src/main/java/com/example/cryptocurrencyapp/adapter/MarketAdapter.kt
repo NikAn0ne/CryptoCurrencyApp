@@ -12,9 +12,9 @@ import com.example.cryptocurrencyapp.databinding.CurrencyItemLayoutBinding
 import com.example.cryptocurrencyapp.fragment.HomeFragmentDirections
 import com.example.cryptocurrencyapp.fragment.MarketFragmentDirections
 import com.example.cryptocurrencyapp.fragment.WatchListFragmentDirections
-import com.example.domain.model.CryptoCurrency
+import com.example.domain.model.CryptoCurrencyData
 
-class MarketAdapter(private var context: Context, private var list: List<CryptoCurrency>, private var type: String) : RecyclerView.Adapter<MarketAdapter.MarketViewHolder>() {
+class MarketAdapter(private var context: Context, private var list: List<CryptoCurrencyData>, private var type: String) : RecyclerView.Adapter<MarketAdapter.MarketViewHolder>() {
     inner  class MarketViewHolder(view: View) : RecyclerView.ViewHolder(view){
         var binding = CurrencyItemLayoutBinding.bind(view)
     }
@@ -23,7 +23,7 @@ class MarketAdapter(private var context: Context, private var list: List<CryptoC
         return MarketViewHolder(LayoutInflater.from(context).inflate(R.layout.currency_item_layout, parent , false))
     }
 
-    fun updateData(dataItem: List<CryptoCurrency>){
+    fun updateData(dataItem: List<CryptoCurrencyData>){
         list = dataItem
         notifyDataSetChanged()
     }
