@@ -9,7 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import com.example.cryptocurrencyapp.adapter.MarketAdapter
 import com.example.cryptocurrencyapp.databinding.FragmentMarketBinding
 import com.example.data.API.ApiUtilities
@@ -27,6 +29,9 @@ class MarketFragment : Fragment() {
 
     private lateinit var binding: FragmentMarketBinding
 
+    private lateinit var viewModel: MarketViewModel
+
+
     private lateinit var list: List<CryptoCurrencyData>
     private lateinit var adapter: MarketAdapter
 
@@ -40,29 +45,22 @@ class MarketFragment : Fragment() {
 
         binding = FragmentMarketBinding.inflate(layoutInflater)
 
-        val  watchListStorage = SharedPrefStorage(requireContext())
-
-        val repository = MarketDataRepositoryImpl(ApiUtilities.api,watchListStorage)
-
-        val  getMarketDataUseCase = GetMarketDataUseCase(repository)
+        viewModel = ViewModelProvider(this,MarketViewModelFactory(requireContext()))
+            .get(MarketViewModel::class.java)
 
         list = listOf()
 
         adapter = MarketAdapter(requireContext(), list, "market")
         binding.currencyRecyclerView.adapter = adapter
 
-        lifecycleScope.launch(Dispatchers.IO){
+                viewModel.list.observe(viewLifecycleOwner){
+                    if(it != null) {
+                        list = it
 
-            if(repository.getMarketData() != null)
-            {
-                withContext(Dispatchers.Main){
-                    list = getMarketDataUseCase.getMarketData()!!
-
-                    adapter.updateData(list)
-                    binding.spinKitView.visibility = GONE
+                        adapter.updateData(list)
+                        binding.spinKitView.visibility = GONE
+                    }
                 }
-            }
-        }
 
         searchCoin()
 

@@ -34,7 +34,7 @@ class HomeFragment : Fragment() {
             HomeViewModelFactory(requireContext())).get(HomeViewModel::class.java)
 
         viewModel.list.observe(viewLifecycleOwner){
-            val adapter = TopMarketAdapter(requireContext(),it,viewModel)
+            val adapter = TopMarketAdapter(requireContext(),it)
             binding.topCurrencyRecyclerView.adapter = adapter
         }
 
