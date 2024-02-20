@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import com.example.cryptocurrencyapp.adapter.MarketAdapter
@@ -16,6 +17,7 @@ import com.example.data.repository.MarketDataRepositoryImpl
 import com.example.data.storage.SharedPrefStorage
 import com.example.domain.model.CryptoCurrencyData
 import com.example.domain.useCases.GetMarketDataUseCase
+import com.example.domain.useCases.WatchListUseCase
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
@@ -27,7 +29,7 @@ private lateinit var  getMarketDataUseCase : GetMarketDataUseCase
 class WatchListFragment : Fragment() {
 
     private lateinit var binding: FragmentWatchListBinding
-    private lateinit var watchList: ArrayList<String>
+    //private lateinit var watchList: ArrayList<String>
     private lateinit var watchListItem: ArrayList<CryptoCurrencyData>
 
     override fun onCreateView(
@@ -43,20 +45,20 @@ class WatchListFragment : Fragment() {
 
         val getMarketDataUseCase = GetMarketDataUseCase(repository)
 
+        val watchListUseCase = WatchListUseCase(repository)
 
-        readData()
+
+        watchListUseCase.readWatchList()
 
         lifecycleScope.launch(Dispatchers.IO){
-            val  res = ApiUtilities.getInstance().create(ApiInterface::class.java)
-                .getMarketData()
 
-            if (res.body() != null)
+            if (getMarketDataUseCase.getMarketData() != null)
             {
                 withContext(Dispatchers.Main){
                     watchListItem = ArrayList()
                     watchListItem.clear()
 
-                    for (watchData in watchList){
+                    for (watchData in watchListUseCase.getWatchList()!!){
                         for (item in getMarketDataUseCase.getMarketData()!!){
                             if (watchData == item.symbol)
                             {
@@ -70,17 +72,13 @@ class WatchListFragment : Fragment() {
 
                 }
             }
+            else {
+                binding.spinKitView.visibility = VISIBLE
+            }
         }
 
         return binding.root
     }
 
-    private fun readData() {
-        val sharedPreferences = requireContext().getSharedPreferences("watchlist", Context.MODE_PRIVATE)
-        val gson = Gson()
-        val json = sharedPreferences.getString("watchlist", ArrayList<String>().toString())
-        val type = object : TypeToken<ArrayList<String>>(){}.type
-        watchList = gson.fromJson(json, type)
-    }
 
 }
