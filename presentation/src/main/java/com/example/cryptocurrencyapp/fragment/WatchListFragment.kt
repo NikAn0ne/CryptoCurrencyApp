@@ -12,6 +12,7 @@ import com.example.cryptocurrencyapp.adapter.MarketAdapter
 import com.example.cryptocurrencyapp.databinding.FragmentWatchListBinding
 import com.example.data.API.ApiInterface
 import com.example.data.API.ApiUtilities
+import com.example.data.repository.MarketDataRepositoryImpl
 import com.example.domain.model.CryptoCurrencyData
 import com.example.domain.useCases.GetMarketDataUseCase
 import com.google.gson.Gson
@@ -34,6 +35,10 @@ class WatchListFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentWatchListBinding.inflate(layoutInflater)
+
+        val repository = MarketDataRepositoryImpl(ApiUtilities.api)
+
+        val getMarketDataUseCase = GetMarketDataUseCase(repository)
 
 
         readData()
