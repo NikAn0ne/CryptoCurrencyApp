@@ -7,6 +7,8 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.example.cryptocurrencyapp.adapter.TopLossGainPagerAdapter
@@ -26,6 +28,8 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
 
+    private lateinit var viewModel: HomeViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,13 +38,10 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
-        val  watchListStorage = SharedPrefStorage(requireContext())
+        viewModel = ViewModelProvider(this,
+            HomeViewModelFactory(requireContext())).get(HomeViewModel::class.java)
 
-        val repository = MarketDataRepositoryImpl(ApiUtilities.api,watchListStorage)
-
-        val getMarketDataUseCase = GetMarketDataUseCase(repository)
-
-        getTopCurrencyList(getMarketDataUseCase)
+        getTopCurrencyList()
 
         setTabLayout()
 
@@ -75,23 +76,27 @@ class HomeFragment : Fragment() {
             tab.text = title
         }.attach()
 
-
     }
 
+    private fun getTopCurrencyList() {
+        viewModel.list.observe(viewLifecycleOwner) {
 
-    private fun getTopCurrencyList(getMarketDataUseCase: GetMarketDataUseCase) {
-
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            withContext(Dispatchers.Main) {
-                binding.topCurrencyRecyclerView.adapter =
-                    getMarketDataUseCase.getMarketData()?.let {
-                        TopMarketAdapter(
-                            requireContext(), it
-                        )
-                    }
+            binding.topCurrencyRecyclerView.adapter = it.let {
+                TopMarketAdapter(requireContext(), it)
             }
         }
+
+
+        /* lifecycleScope.launch(Dispatchers.IO) {
+             withContext(Dispatchers.Main) {
+                 binding.topCurrencyRecyclerView.adapter =
+                     getMarketDataUseCase.getMarketData()?.let {
+                         TopMarketAdapter(
+                             requireContext(), it
+                         )
+                     }
+             }
+         }*/
 
         /*else{
                 val snackbar: Snackbar = Snackbar.make(requireView(),"No Internet Connection", Snackbar.LENGTH_SHORT)
