@@ -7,21 +7,12 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.example.cryptocurrencyapp.adapter.TopLossGainPagerAdapter
 import com.example.cryptocurrencyapp.adapter.TopMarketAdapter
 import com.example.cryptocurrencyapp.databinding.FragmentHomeBinding
-import com.example.data.API.ApiUtilities
-import com.example.data.repository.MarketDataRepositoryImpl
-import com.example.data.storage.SharedPrefStorage
-import com.example.domain.useCases.GetMarketDataUseCase
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 class HomeFragment : Fragment() {
@@ -29,6 +20,7 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
 
     private lateinit var viewModel: HomeViewModel
+
 
 
     override fun onCreateView(
@@ -41,7 +33,11 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProvider(this,
             HomeViewModelFactory(requireContext())).get(HomeViewModel::class.java)
 
-        getTopCurrencyList()
+        viewModel.list.observe(viewLifecycleOwner){
+            val adapter = TopMarketAdapter(requireContext(),it,viewModel)
+            binding.topCurrencyRecyclerView.adapter = adapter
+        }
+
 
         setTabLayout()
 
@@ -78,13 +74,13 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun getTopCurrencyList() {
+    /*private fun getTopCurrencyList() {
         viewModel.list.observe(viewLifecycleOwner) {
 
             binding.topCurrencyRecyclerView.adapter = it.let {
                 TopMarketAdapter(requireContext(), it)
             }
-        }
+        }*/
 
 
         /* lifecycleScope.launch(Dispatchers.IO) {
@@ -118,8 +114,9 @@ class HomeFragment : Fragment() {
     }
 */
 
+
+
     }
-}
 
 
 
