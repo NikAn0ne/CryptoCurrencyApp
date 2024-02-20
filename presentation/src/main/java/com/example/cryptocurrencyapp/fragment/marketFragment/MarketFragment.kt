@@ -1,4 +1,4 @@
-package com.example.cryptocurrencyapp.fragment
+package com.example.cryptocurrencyapp.fragment.marketFragment
 
 import android.os.Bundle
 import android.text.Editable
@@ -12,11 +12,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import com.example.cryptocurrencyapp.adapter.MarketAdapter
 import com.example.cryptocurrencyapp.databinding.FragmentMarketBinding
-import com.example.data.API.ApiInterface
 import com.example.data.API.ApiUtilities
 import com.example.data.repository.MarketDataRepositoryImpl
 import com.example.data.storage.SharedPrefStorage
-import com.example.data.storage.WatchListStorage
 import com.example.domain.model.CryptoCurrencyData
 import com.example.domain.useCases.GetMarketDataUseCase
 import kotlinx.coroutines.Dispatchers

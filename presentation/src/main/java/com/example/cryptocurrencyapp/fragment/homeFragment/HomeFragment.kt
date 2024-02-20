@@ -1,8 +1,5 @@
-package com.example.cryptocurrencyapp.fragment
+package com.example.cryptocurrencyapp.fragment.homeFragment
 
-import android.content.Context
-import android.graphics.Color
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,16 +9,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
-import com.example.cryptocurrencyapp.R
 import com.example.cryptocurrencyapp.adapter.TopLossGainPagerAdapter
 import com.example.cryptocurrencyapp.adapter.TopMarketAdapter
 import com.example.cryptocurrencyapp.databinding.FragmentHomeBinding
-import com.example.data.API.ApiInterface
 import com.example.data.API.ApiUtilities
 import com.example.data.repository.MarketDataRepositoryImpl
 import com.example.data.storage.SharedPrefStorage
 import com.example.domain.useCases.GetMarketDataUseCase
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

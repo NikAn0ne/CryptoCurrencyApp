@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptocurrencyapp.R
 import com.example.cryptocurrencyapp.databinding.CurrencyItemLayoutBinding
-import com.example.cryptocurrencyapp.fragment.HomeFragmentDirections
-import com.example.cryptocurrencyapp.fragment.MarketFragmentDirections
-import com.example.cryptocurrencyapp.fragment.WatchListFragmentDirections
+import com.example.cryptocurrencyapp.fragment.homeFragment.HomeFragmentDirections
+import com.example.cryptocurrencyapp.fragment.marketFragment.MarketFragmentDirections
+import com.example.cryptocurrencyapp.fragment.watchListFragment.WatchListFragmentDirections
 import com.example.domain.model.CryptoCurrencyData
 
 class MarketAdapter(private var context: Context, private var list: List<CryptoCurrencyData>, private var type: String) : RecyclerView.Adapter<MarketAdapter.MarketViewHolder>() {

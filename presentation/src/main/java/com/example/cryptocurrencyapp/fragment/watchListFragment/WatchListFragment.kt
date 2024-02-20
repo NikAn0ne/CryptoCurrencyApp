@@ -1,12 +1,10 @@
-package com.example.cryptocurrencyapp.fragment
+package com.example.cryptocurrencyapp.fragment.watchListFragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.cryptocurrencyapp.adapter.MarketAdapter
 import com.example.cryptocurrencyapp.databinding.FragmentWatchListBinding
@@ -20,8 +18,6 @@ import com.example.domain.useCases.ReadWatchListUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
-private lateinit var  getMarketDataUseCase : GetMarketDataUseCase
 
 class WatchListFragment : Fragment() {
 
@@ -54,26 +50,26 @@ class WatchListFragment : Fragment() {
 
             if (getMarketDataUseCase.getMarketData() != null)
             {
-                withContext(Dispatchers.Main){
+                withContext(Dispatchers.Main) {
                     watchListItem = ArrayList()
                     watchListItem.clear()
 
-                    for (watchData in watchList!!){
-                        for (item in getMarketDataUseCase.getMarketData()!!){
-                            if (watchData == item.symbol)
-                            {
+                    for (watchData in watchList!!) {
+                        for (item in getMarketDataUseCase.getMarketData()!!) {
+                            if (watchData == item.symbol) {
                                 watchListItem.add(item)
                             }
                         }
                     }
 
-                    binding.spinKitView.visibility = GONE
-                    binding.watchlistRecyclerView.adapter = MarketAdapter(requireContext(),watchListItem, "watchfragment")
+                    binding.spinKitView.visibility = View.GONE
+                    binding.watchlistRecyclerView.adapter =
+                        MarketAdapter(requireContext(), watchListItem, "watchfragment")
 
                 }
             }
             else {
-                binding.spinKitView.visibility = VISIBLE
+                binding.spinKitView.visibility = View.VISIBLE
             }
         }
 

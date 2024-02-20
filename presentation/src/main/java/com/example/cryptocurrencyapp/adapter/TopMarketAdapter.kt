@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptocurrencyapp.R
 import com.example.cryptocurrencyapp.databinding.TopCurrencyLayoutBinding
-import com.example.cryptocurrencyapp.fragment.HomeFragmentDirections
+import com.example.cryptocurrencyapp.fragment.homeFragment.HomeFragmentDirections
 import com.example.domain.model.CryptoCurrencyData
 
 class TopMarketAdapter(var context: Context, val list: List<CryptoCurrencyData>) : RecyclerView.Adapter<TopMarketAdapter.TopMarketViewHolder>() {

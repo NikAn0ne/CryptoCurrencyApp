@@ -1,4 +1,4 @@
-package com.example.cryptocurrencyapp.fragment
+package com.example.cryptocurrencyapp.fragment.detailsFragment
 
 import android.os.Bundle
 import android.util.Log
@@ -24,7 +24,7 @@ class DetailsFragment : Fragment() {
 
      private lateinit var binding: FragmentDetailsBinding
 
-     private val item: DetailsFragmentArgs by navArgs()
+     private val item: com.example.cryptocurrencyapp.fragment.detailsFragment.DetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

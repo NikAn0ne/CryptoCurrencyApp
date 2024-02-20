@@ -1,4 +1,4 @@
-package com.example.cryptocurrencyapp.fragment
+package com.example.cryptocurrencyapp.fragment.topLossGainFragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
