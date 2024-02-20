@@ -12,7 +12,11 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.cryptocurrencyapp.R
 import com.example.cryptocurrencyapp.databinding.FragmentDetailsBinding
+import com.example.data.API.ApiUtilities
+import com.example.data.repository.MarketDataRepositoryImpl
+import com.example.data.storage.SharedPrefStorage
 import com.example.domain.model.CryptoCurrencyData
+import com.example.domain.useCases.WatchListUseCase
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -32,6 +36,12 @@ class DetailsFragment : Fragment() {
 
         val data : CryptoCurrencyData? = item.data
 
+        val  watchListStorage = SharedPrefStorage(requireContext())
+
+        val repository = MarketDataRepositoryImpl(ApiUtilities.api,watchListStorage)
+
+        val watchListUseCase = WatchListUseCase(repository)
+
         if (data != null) {
             setUpDetails(data)
 
@@ -41,20 +51,20 @@ class DetailsFragment : Fragment() {
 
             getDetailsList(data)
 
-            addToWatchList(data)
+            addToWatchList(data, watchListUseCase)
         }
 
 
         return binding.root
     }
 
-    var watchList: ArrayList<String>? = null
-    var watchListIsChecked = false
+    //private var watchList: ArrayList<String>? = null
+    private var watchListIsChecked = false
 
-    private fun addToWatchList(data: CryptoCurrencyData) {
-        readData()
+    private fun addToWatchList(data: CryptoCurrencyData, watchListUseCase: WatchListUseCase) {
+        watchListUseCase.readWatchList()
 
-        watchListIsChecked = if (watchList!!.contains(data.symbol)){
+        watchListIsChecked = if (watchListUseCase.getWatchList()!!.contains(data.symbol)){
             binding.addWatchlistButton.setImageResource(R.drawable.ic_star)
             true
         }
@@ -66,11 +76,11 @@ class DetailsFragment : Fragment() {
         binding.addWatchlistButton.setOnClickListener{
             watchListIsChecked =
                 if (!watchListIsChecked){
-                    if (!watchList?.contains(data.symbol)!!){
+                    if (!watchListUseCase.getWatchList()?.contains(data.symbol)!!){
 
-                        watchList?.add(data.symbol)
+                        watchListUseCase.getWatchList()?.add(data.symbol)
                     }
-                    storeData()
+                    watchListUseCase.storeWatchList()
                     binding.addWatchlistButton.setImageResource(R.drawable.ic_star)
 
 
@@ -78,30 +88,30 @@ class DetailsFragment : Fragment() {
                 }
             else{
                     binding.addWatchlistButton.setImageResource(R.drawable.ic_star_outline)
-                    watchList?.remove(data.symbol)
-                    storeData()
+                    watchListUseCase.getWatchList()?.remove(data.symbol)
+                    watchListUseCase.storeWatchList()
 
                 false
                 }
         }
     }
 
-    private fun storeData(){
+   /* private fun storeData(){
         val sharedPreferences = requireContext().getSharedPreferences("watchlist", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         val gson = Gson()
         val json = gson.toJson(watchList)
         editor.putString("watchlist", json)
         editor.apply()
-    }
+    }*/
 
-    private fun readData() {
+    /*private fun readData() {
         val sharedPreferences = requireContext().getSharedPreferences("watchlist", Context.MODE_PRIVATE)
         val gson = Gson()
         val json = sharedPreferences.getString("watchlist", ArrayList<String>().toString())
         val type = object : TypeToken<ArrayList<String>>(){}.type
         watchList = gson.fromJson(json, type)
-    }
+    }*/
 
     private fun setButtonOnClick(item: CryptoCurrencyData) {
         val oneMonth = binding.button

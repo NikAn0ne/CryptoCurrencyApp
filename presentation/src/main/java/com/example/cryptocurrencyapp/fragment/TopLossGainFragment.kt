@@ -12,6 +12,7 @@ import com.example.cryptocurrencyapp.databinding.FragmentTopLossGainBinding
 import com.example.data.API.ApiInterface
 import com.example.data.API.ApiUtilities
 import com.example.data.repository.MarketDataRepositoryImpl
+import com.example.data.storage.SharedPrefStorage
 import com.example.domain.model.CryptoCurrencyData
 import com.example.domain.useCases.GetMarketDataUseCase
 import kotlinx.coroutines.Dispatchers
@@ -33,7 +34,9 @@ class TopLossGainFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentTopLossGainBinding.inflate(layoutInflater)
 
-        val repository = MarketDataRepositoryImpl(ApiUtilities.api)
+        val  watchListStorage = SharedPrefStorage(requireContext())
+
+        val repository = MarketDataRepositoryImpl(ApiUtilities.api, watchListStorage)
 
         val  getMarketDataUseCase = GetMarketDataUseCase(repository)
 

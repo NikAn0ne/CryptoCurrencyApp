@@ -15,6 +15,8 @@ import com.example.cryptocurrencyapp.databinding.FragmentMarketBinding
 import com.example.data.API.ApiInterface
 import com.example.data.API.ApiUtilities
 import com.example.data.repository.MarketDataRepositoryImpl
+import com.example.data.storage.SharedPrefStorage
+import com.example.data.storage.WatchListStorage
 import com.example.domain.model.CryptoCurrencyData
 import com.example.domain.useCases.GetMarketDataUseCase
 import kotlinx.coroutines.Dispatchers
@@ -32,6 +34,7 @@ class MarketFragment : Fragment() {
 
 
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,7 +42,9 @@ class MarketFragment : Fragment() {
 
         binding = FragmentMarketBinding.inflate(layoutInflater)
 
-        val repository = MarketDataRepositoryImpl(ApiUtilities.api)
+        val  watchListStorage = SharedPrefStorage(requireContext())
+
+        val repository = MarketDataRepositoryImpl(ApiUtilities.api,watchListStorage)
 
         val  getMarketDataUseCase = GetMarketDataUseCase(repository)
 

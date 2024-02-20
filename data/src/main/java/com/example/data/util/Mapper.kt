@@ -1,7 +1,7 @@
 package com.example.data.util
 
-import com.example.data.models.CryptoCurrency
-import com.example.data.models.Data
+import com.example.data.storage.models.CryptoCurrency
+import com.example.data.storage.models.Data
 import com.example.domain.model.CryptoCurrencyData
 
 fun CryptoCurrency.toDomain() : CryptoCurrencyData{

@@ -1,6 +1,6 @@
-package com.example.data.models
+package com.example.data.storage.models
 
-import com.example.data.models.CryptoCurrency
+import com.example.data.storage.models.CryptoCurrency
 
 
 data class Data(
