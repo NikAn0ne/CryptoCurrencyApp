@@ -1,6 +1,5 @@
 package com.example.cryptocurrencyapp.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -16,9 +15,9 @@ import com.example.data.API.ApiUtilities
 import com.example.data.repository.MarketDataRepositoryImpl
 import com.example.data.storage.SharedPrefStorage
 import com.example.domain.model.CryptoCurrencyData
-import com.example.domain.useCases.WatchListUseCase
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.example.domain.useCases.GetWatchListUseCase
+import com.example.domain.useCases.ReadWatchListUseCase
+import com.example.domain.useCases.StoreWatchListUseCase
 
 
 class DetailsFragment : Fragment() {
@@ -40,7 +39,11 @@ class DetailsFragment : Fragment() {
 
         val repository = MarketDataRepositoryImpl(ApiUtilities.api,watchListStorage)
 
-        val watchListUseCase = WatchListUseCase(repository)
+        val readWatchListUseCase = ReadWatchListUseCase(repository)
+
+        val getWatchListUseCase = GetWatchListUseCase(repository)
+
+        val storeWatchListUseCase = StoreWatchListUseCase(repository)
 
         if (data != null) {
             setUpDetails(data)
@@ -51,7 +54,7 @@ class DetailsFragment : Fragment() {
 
             getDetailsList(data)
 
-            addToWatchList(data, watchListUseCase)
+            addToWatchList(data, readWatchListUseCase, getWatchListUseCase,storeWatchListUseCase)
         }
 
 
@@ -61,10 +64,15 @@ class DetailsFragment : Fragment() {
     //private var watchList: ArrayList<String>? = null
     private var watchListIsChecked = false
 
-    private fun addToWatchList(data: CryptoCurrencyData, watchListUseCase: WatchListUseCase) {
-        watchListUseCase.readWatchList()
+    private fun addToWatchList(
+        data: CryptoCurrencyData,
+        readWatchListUseCase: ReadWatchListUseCase,
+        getWatchListUseCase: GetWatchListUseCase,
+        storeWatchListUseCase: StoreWatchListUseCase
+    ) {
+        readWatchListUseCase.readWatchList()
 
-        watchListIsChecked = if (watchListUseCase.getWatchList()!!.contains(data.symbol)){
+        watchListIsChecked = if (getWatchListUseCase.getWatchList()!!.contains(data.symbol)){
             binding.addWatchlistButton.setImageResource(R.drawable.ic_star)
             true
         }
@@ -76,11 +84,11 @@ class DetailsFragment : Fragment() {
         binding.addWatchlistButton.setOnClickListener{
             watchListIsChecked =
                 if (!watchListIsChecked){
-                    if (!watchListUseCase.getWatchList()?.contains(data.symbol)!!){
+                    if (!getWatchListUseCase.getWatchList()?.contains(data.symbol)!!){
 
-                        watchListUseCase.getWatchList()?.add(data.symbol)
+                        getWatchListUseCase.getWatchList()?.add(data.symbol)
                     }
-                    watchListUseCase.storeWatchList()
+                    storeWatchListUseCase.storeWatchList()
                     binding.addWatchlistButton.setImageResource(R.drawable.ic_star)
 
 
@@ -88,8 +96,8 @@ class DetailsFragment : Fragment() {
                 }
             else{
                     binding.addWatchlistButton.setImageResource(R.drawable.ic_star_outline)
-                    watchListUseCase.getWatchList()?.remove(data.symbol)
-                    watchListUseCase.storeWatchList()
+                    getWatchListUseCase.getWatchList()?.remove(data.symbol)
+                    storeWatchListUseCase.storeWatchList()
 
                 false
                 }

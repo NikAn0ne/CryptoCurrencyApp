@@ -1,6 +1,5 @@
 package com.example.cryptocurrencyapp.fragment
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,15 +10,13 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import com.example.cryptocurrencyapp.adapter.MarketAdapter
 import com.example.cryptocurrencyapp.databinding.FragmentWatchListBinding
-import com.example.data.API.ApiInterface
 import com.example.data.API.ApiUtilities
 import com.example.data.repository.MarketDataRepositoryImpl
 import com.example.data.storage.SharedPrefStorage
 import com.example.domain.model.CryptoCurrencyData
 import com.example.domain.useCases.GetMarketDataUseCase
-import com.example.domain.useCases.WatchListUseCase
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.example.domain.useCases.GetWatchListUseCase
+import com.example.domain.useCases.ReadWatchListUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -45,10 +42,13 @@ class WatchListFragment : Fragment() {
 
         val getMarketDataUseCase = GetMarketDataUseCase(repository)
 
-        val watchListUseCase = WatchListUseCase(repository)
+        val readWatchListUseCase = ReadWatchListUseCase(repository)
 
+        val getWatchListUseCase = GetWatchListUseCase(repository)
 
-        watchListUseCase.readWatchList()
+        readWatchListUseCase.readWatchList()
+
+        val watchList = getWatchListUseCase.getWatchList()
 
         lifecycleScope.launch(Dispatchers.IO){
 
@@ -58,7 +58,7 @@ class WatchListFragment : Fragment() {
                     watchListItem = ArrayList()
                     watchListItem.clear()
 
-                    for (watchData in watchListUseCase.getWatchList()!!){
+                    for (watchData in watchList!!){
                         for (item in getMarketDataUseCase.getMarketData()!!){
                             if (watchData == item.symbol)
                             {

@@ -54,9 +54,8 @@ class MarketFragment : Fragment() {
         binding.currencyRecyclerView.adapter = adapter
 
         lifecycleScope.launch(Dispatchers.IO){
-            val res = ApiUtilities.getInstance().create(ApiInterface::class.java).getMarketData()
 
-            if(res.body() != null)
+            if(repository.getMarketData() != null)
             {
                 withContext(Dispatchers.Main){
                     list = getMarketDataUseCase.getMarketData()!!
