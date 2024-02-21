@@ -1,5 +1,6 @@
 package com.example.cryptocurrencyapp.fragment.homeFragment
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,6 +17,7 @@ class HomeViewModel(getMarketDataUseCase: GetMarketDataUseCase) : ViewModel() {
 
     init {
         getList(getMarketDataUseCase)
+        Log.d("vmList", list.value.toString())
     }
 
 
