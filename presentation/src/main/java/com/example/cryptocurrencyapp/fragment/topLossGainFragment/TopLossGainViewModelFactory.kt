@@ -8,7 +8,7 @@ import com.example.data.repository.MarketDataRepositoryImpl
 import com.example.data.storage.SharedPrefStorage
 import com.example.domain.useCases.GetMarketDataUseCase
 
-class TopLossGainViewModelFactory(context: Context, position: Int): ViewModelProvider.Factory {
+class TopLossGainViewModelFactory(context: Context): ViewModelProvider.Factory {
 
     private val  watchListStorage by lazy { SharedPrefStorage(context) }
 
@@ -16,9 +16,8 @@ class TopLossGainViewModelFactory(context: Context, position: Int): ViewModelPro
 
     private val getMarketDataUseCase by lazy { GetMarketDataUseCase(repository) }
 
-    private val position by lazy { position }
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return TopLossGainViewModel(getMarketDataUseCase = getMarketDataUseCase, position) as T
+        return TopLossGainViewModel(getMarketDataUseCase = getMarketDataUseCase, repository) as T
     }
 }

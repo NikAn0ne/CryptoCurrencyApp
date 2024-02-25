@@ -36,87 +36,66 @@ class TopLossGainFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentTopLossGainBinding.inflate(layoutInflater)
 
-        val position = requireArguments().getInt("position")
 
-        viewModel = ViewModelProvider(this,TopLossGainViewModelFactory(requireContext(), position))
+        viewModel = ViewModelProvider(this,TopLossGainViewModelFactory(requireContext()))
             .get(TopLossGainViewModel::class.java)
 
-        val  watchListStorage = SharedPrefStorage(requireContext())
+        viewModel.marketData.observe(viewLifecycleOwner){
+            val position = requireArguments().getInt("position")
 
-        val repository = MarketDataRepositoryImpl(ApiUtilities.api, watchListStorage)
+                if (it != null){
+                        val dataItem = it
 
-        val  getMarketDataUseCase = GetMarketDataUseCase(repository)
+                        Collections.sort(dataItem){
+                                o1,o2 -> (o2.percentChange24h.toInt())
+                            .compareTo(o1.percentChange24h.toInt())
+                        }
+                        Log.d("nVM", dataItem[0].name)
 
-        getMarketData(getMarketDataUseCase)
+                        binding.spinKitView.visibility = GONE
+                        val list = ArrayList<CryptoCurrencyData>()
 
-        /*viewModel.list.observe(viewLifecycleOwner){
+                        Log.d("nVM", list.toString())
 
-            binding.topGainLoseRecyclerView.adapter = MarketAdapter(requireContext(),it,"home")
+                        if (position == 0){
+                            list.clear()
+                            for (i in 0..9)
+                            {
+                                list.add(dataItem[i])
+                                Log.d("nvm", list[i].toString())
+                            }
+                            Log.d("nVM", list.toString())
 
-        }*/
+                            binding.topGainLoseRecyclerView.adapter = MarketAdapter(
+                                requireContext(),
+                                list,
+                                "home"
+                            )
+                        }
 
-       /* viewModel.arrayList.observe(viewLifecycleOwner){list ->
-            binding.topGainLoseRecyclerView.adapter = MarketAdapter(requireContext(),list,"home")
-        }*/
+                        else{
+                            list.clear()
+                            for (i in 0..9)
+                            {
+                                (dataItem?.get(dataItem.size - 1 - i) ?: null)?.let { list.add(it) }
+                            }
+                            Log.d("VM", list.toString())
+                            binding.topGainLoseRecyclerView.adapter = MarketAdapter(
+                                requireContext(),
+                                list,
+                                "home"
+                            )
+
+                        }
+
+                }
+
+        }
 
 
         return binding.root
     }
 
-    private fun getMarketData(getMarketDataUseCase: GetMarketDataUseCase) {
-
-        val position = requireArguments().getInt("position")
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            if (getMarketDataUseCase.getMarketData() != null){
-                withContext(Dispatchers.Main){
-                    val dataItem = getMarketDataUseCase.getMarketData()
-
-                    Collections.sort(dataItem){
-                        o1,o2 -> (o2.percentChange24h.toInt())
-                        .compareTo(o1.percentChange24h.toInt())
-                    }
-                    Log.d("nVM", dataItem!![0].name)
-
-                    binding.spinKitView.visibility = GONE
-                    val list = ArrayList<CryptoCurrencyData>()
-
-                    Log.d("nVM", list.toString())
-
-                    if (position == 0){
-                        list.clear()
-                        for (i in 0..9)
-                        {
-                            list.add(dataItem[i])
-                            Log.d("nvm", list[i].toString())
-                        }
-                        Log.d("nVM", list.toString())
-
-                        binding.topGainLoseRecyclerView.adapter = MarketAdapter(
-                            requireContext(),
-                            list,
-                            "home"
-                        )
-                    }
-
-                    else{
-                        list.clear()
-                        for (i in 0..9)
-                        {
-                            (dataItem?.get(dataItem.size - 1 - i) ?: null)?.let { list.add(it) }
-                        }
-                        Log.d("VM", list.toString())
-                        binding.topGainLoseRecyclerView.adapter = MarketAdapter(
-                            requireContext(),
-                            list,
-                            "home"
-                        )
-
-                    }
-                }
-            }
-        }
-    }
 
 
 }
