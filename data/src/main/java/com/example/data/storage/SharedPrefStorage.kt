@@ -1,6 +1,7 @@
 package com.example.data.storage
 
 import android.content.Context
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -24,6 +25,7 @@ class SharedPrefStorage(context: Context) : WatchListStorage {
         val json = sharedPreferences.getString(SHARED_PREFS_KEY, ArrayList<String>().toString())
         val type = object : TypeToken<ArrayList<String>>(){}.type
         watchList = gson.fromJson(json, type)
+        Log.d("SharedPref", "$watchList")
     }
 
     override fun getWatchList() : ArrayList<String>? {
