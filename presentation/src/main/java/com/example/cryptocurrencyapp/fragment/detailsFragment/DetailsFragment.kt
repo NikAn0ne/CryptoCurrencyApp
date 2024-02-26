@@ -7,10 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatButton
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.cryptocurrencyapp.R
 import com.example.cryptocurrencyapp.databinding.FragmentDetailsBinding
+import com.example.cryptocurrencyapp.fragment.watchListFragment.WatchListViewModel
+import com.example.cryptocurrencyapp.fragment.watchListFragment.WatchListViewModelFactory
 import com.example.data.API.ApiUtilities
 import com.example.data.repository.MarketDataRepositoryImpl
 import com.example.data.storage.SharedPrefStorage
@@ -24,6 +27,8 @@ class DetailsFragment : Fragment() {
 
      private lateinit var binding: FragmentDetailsBinding
 
+     private lateinit var viewModel: DetailsViewModel
+
      private val item: DetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -32,6 +37,9 @@ class DetailsFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentDetailsBinding.inflate(layoutInflater)
+
+        viewModel = ViewModelProvider(this, DetailsViewModelFactory(requireContext()))
+            .get(DetailsViewModel::class.java)
 
         val data : CryptoCurrencyData? = item.data
 
@@ -54,7 +62,10 @@ class DetailsFragment : Fragment() {
 
             getDetailsList(data)
 
-            addToWatchList(data, readWatchListUseCase, getWatchListUseCase,storeWatchListUseCase)
+            addToWatchList(data)
+
+
+
         }
 
 
@@ -65,14 +76,13 @@ class DetailsFragment : Fragment() {
     private var watchListIsChecked = false
 
     private fun addToWatchList(
-        data: CryptoCurrencyData,
-        readWatchListUseCase: ReadWatchListUseCase,
-        getWatchListUseCase: GetWatchListUseCase,
-        storeWatchListUseCase: StoreWatchListUseCase
+        data: CryptoCurrencyData
     ) {
-        readWatchListUseCase.readWatchList()
+        viewModel.readWatchList()
 
-        watchListIsChecked = if (getWatchListUseCase.getWatchList()!!.contains(data.symbol)){
+        val watchList = viewModel.getWatchList()
+
+        watchListIsChecked = if (watchList.contains(data.symbol)){
             binding.addWatchlistButton.setImageResource(R.drawable.ic_star)
             true
         }
@@ -84,11 +94,11 @@ class DetailsFragment : Fragment() {
         binding.addWatchlistButton.setOnClickListener{
             watchListIsChecked =
                 if (!watchListIsChecked){
-                    if (!getWatchListUseCase.getWatchList()?.contains(data.symbol)!!){
+                    if (!watchList.contains(data.symbol)){
 
-                        getWatchListUseCase.getWatchList()?.add(data.symbol)
+                        watchList.add(data.symbol)
                     }
-                    storeWatchListUseCase.storeWatchList()
+                    viewModel.storeWatchList()
                     binding.addWatchlistButton.setImageResource(R.drawable.ic_star)
 
 
@@ -96,30 +106,13 @@ class DetailsFragment : Fragment() {
                 }
             else{
                     binding.addWatchlistButton.setImageResource(R.drawable.ic_star_outline)
-                    getWatchListUseCase.getWatchList()?.remove(data.symbol)
-                    storeWatchListUseCase.storeWatchList()
+                    watchList.remove(data.symbol)
+                    viewModel.storeWatchList()
 
                 false
                 }
         }
     }
-
-   /* private fun storeData(){
-        val sharedPreferences = requireContext().getSharedPreferences("watchlist", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        val gson = Gson()
-        val json = gson.toJson(watchList)
-        editor.putString("watchlist", json)
-        editor.apply()
-    }*/
-
-    /*private fun readData() {
-        val sharedPreferences = requireContext().getSharedPreferences("watchlist", Context.MODE_PRIVATE)
-        val gson = Gson()
-        val json = sharedPreferences.getString("watchlist", ArrayList<String>().toString())
-        val type = object : TypeToken<ArrayList<String>>(){}.type
-        watchList = gson.fromJson(json, type)
-    }*/
 
     private fun setButtonOnClick(item: CryptoCurrencyData) {
         val oneMonth = binding.button
