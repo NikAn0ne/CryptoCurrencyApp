@@ -13,7 +13,7 @@ import com.example.cryptocurrencyapp.fragment.homeFragment.HomeFragmentDirection
 import com.example.cryptocurrencyapp.fragment.homeFragment.HomeViewModel
 import com.example.domain.model.CryptoCurrencyData
 
-class TopMarketAdapter(var context: Context, val list: List<CryptoCurrencyData>) : RecyclerView.Adapter<TopMarketAdapter.TopMarketViewHolder>() {
+class TopMarketAdapter(var context: Context, var list: List<CryptoCurrencyData>) : RecyclerView.Adapter<TopMarketAdapter.TopMarketViewHolder>() {
 
     inner class TopMarketViewHolder(view: View) : RecyclerView.ViewHolder(view){
         var binding = TopCurrencyLayoutBinding.bind(view)
@@ -21,6 +21,10 @@ class TopMarketAdapter(var context: Context, val list: List<CryptoCurrencyData>)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopMarketViewHolder {
         return TopMarketViewHolder(LayoutInflater.from(context).inflate(R.layout.top_currency_layout, parent, false))
+    }
+    fun updateData(dataItem: List<CryptoCurrencyData>){
+        list = dataItem
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {

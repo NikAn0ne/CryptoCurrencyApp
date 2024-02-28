@@ -1,5 +1,6 @@
 package com.example.cryptocurrencyapp.fragment.detailsFragment
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,6 +11,8 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.example.cryptocurrencyapp.InternetConnectionCheck
+import com.example.cryptocurrencyapp.MainActivity
 import com.example.cryptocurrencyapp.R
 import com.example.cryptocurrencyapp.databinding.FragmentDetailsBinding
 import com.example.cryptocurrencyapp.fragment.watchListFragment.WatchListViewModel
@@ -21,6 +24,7 @@ import com.example.domain.model.CryptoCurrencyData
 import com.example.domain.useCases.GetWatchListUseCase
 import com.example.domain.useCases.ReadWatchListUseCase
 import com.example.domain.useCases.StoreWatchListUseCase
+import com.google.android.material.snackbar.Snackbar
 
 
 class DetailsFragment : Fragment() {
@@ -43,15 +47,6 @@ class DetailsFragment : Fragment() {
 
         val data : CryptoCurrencyData? = item.data
 
-        val  watchListStorage = SharedPrefStorage(requireContext())
-
-        val repository = MarketDataRepositoryImpl(ApiUtilities.api,watchListStorage)
-
-        val readWatchListUseCase = ReadWatchListUseCase(repository)
-
-        val getWatchListUseCase = GetWatchListUseCase(repository)
-
-        val storeWatchListUseCase = StoreWatchListUseCase(repository)
 
         if (data != null) {
             setUpDetails(data)
@@ -70,6 +65,17 @@ class DetailsFragment : Fragment() {
 
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val internetStatus = InternetConnectionCheck(requireContext()).internet_connection()
+        if (!internetStatus){
+            val snackbar: Snackbar = Snackbar.make(requireView(),"No Internet Connection, please check your connection", Snackbar.LENGTH_SHORT)
+            snackbar.setActionTextColor(Color.BLACK)
+                .show()
+        }
+
     }
 
     //private var watchList: ArrayList<String>? = null
@@ -111,6 +117,10 @@ class DetailsFragment : Fragment() {
 
                 false
                 }
+        }
+
+        binding.backStackButton.setOnClickListener{
+            (activity as MainActivity).supportFragmentManager.popBackStack()
         }
     }
 

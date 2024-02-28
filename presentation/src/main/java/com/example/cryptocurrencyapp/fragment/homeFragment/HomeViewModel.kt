@@ -1,5 +1,6 @@
 package com.example.cryptocurrencyapp.fragment.homeFragment
 
+import android.net.ConnectivityManager
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,21 +13,24 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(getMarketDataUseCase: GetMarketDataUseCase) : ViewModel() {
 
+    val getMarketDataUseCase = getMarketDataUseCase
+
     private val mutableList = MutableLiveData<List<CryptoCurrencyData>>()
     val list : LiveData<List<CryptoCurrencyData>> = mutableList
 
     init {
-        getList(getMarketDataUseCase)
+        getList()
         Log.d("vmList", list.value.toString())
     }
 
 
-     fun getList(getMarketDataUseCase: GetMarketDataUseCase){
+     fun getList(){
 
         viewModelScope.launch {
         mutableList.value = getMarketDataUseCase.getMarketData()
+    }
+    }
 
-    }
-    }
+
 
 }
