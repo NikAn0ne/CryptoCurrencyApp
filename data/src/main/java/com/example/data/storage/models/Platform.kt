@@ -1,4 +1,4 @@
-package com.example.domain.model
+package com.example.data.storage.models
 
 data class Platform(
     val id: Int,

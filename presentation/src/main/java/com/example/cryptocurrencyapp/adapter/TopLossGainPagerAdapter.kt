@@ -3,7 +3,7 @@ package com.example.cryptocurrencyapp.adapter
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.cryptocurrencyapp.fragment.TopLossGainFragment
+import com.example.cryptocurrencyapp.fragment.topLossGainFragment.TopLossGainFragment
 
 class TopLossGainPagerAdapter(fragment: Fragment): FragmentStateAdapter(fragment){
     override fun getItemCount(): Int {

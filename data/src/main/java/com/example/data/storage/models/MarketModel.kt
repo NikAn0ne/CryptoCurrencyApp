@@ -1,4 +1,5 @@
-package com.example.domain.model
+package com.example.data.storage.models
+
 
 data class MarketModel(
     val `data`: Data,

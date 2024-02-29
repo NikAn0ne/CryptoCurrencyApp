@@ -1,9 +1,8 @@
-package com.example.domain.model
+package com.example.data.storage.models
 
 import java.io.Serializable
 
 data class CryptoCurrency(
-    val auditInfoList: List<AuditInfo>,
     val badges: List<Int>,
     val circulatingSupply: Double,
     val cmcRank: Int,

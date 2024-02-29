@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptocurrencyapp.R
 import com.example.cryptocurrencyapp.databinding.TopCurrencyLayoutBinding
-import com.example.cryptocurrencyapp.fragment.HomeFragmentDirections
-import com.example.domain.model.CryptoCurrency
+import com.example.cryptocurrencyapp.fragment.homeFragment.HomeFragmentDirections
+import com.example.domain.model.CryptoCurrencyData
 
-class TopMarketAdapter(var context: Context, val list: List<CryptoCurrency>) : RecyclerView.Adapter<TopMarketAdapter.TopMarketViewHolder>() {
+class TopMarketAdapter(var context: Context, var list: List<CryptoCurrencyData>) : RecyclerView.Adapter<TopMarketAdapter.TopMarketViewHolder>() {
 
     inner class TopMarketViewHolder(view: View) : RecyclerView.ViewHolder(view){
         var binding = TopCurrencyLayoutBinding.bind(view)
@@ -20,6 +20,10 @@ class TopMarketAdapter(var context: Context, val list: List<CryptoCurrency>) : R
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopMarketViewHolder {
         return TopMarketViewHolder(LayoutInflater.from(context).inflate(R.layout.top_currency_layout, parent, false))
+    }
+    fun updateData(dataItem: List<CryptoCurrencyData>){
+        list = dataItem
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
@@ -36,14 +40,14 @@ class TopMarketAdapter(var context: Context, val list: List<CryptoCurrency>) : R
             .into(holder.binding.topCurrencyImageView)
 
 
-            if (item.quotes!![0].percentChange24h >0){
+            if (item.percentChange24h >0){
 
                 holder.binding.topCurrencyChangeTextView.setTextColor(context.resources.getColor(R.color.green))
-                holder.binding.topCurrencyChangeTextView.text = "+ ${String.format("%.02f", item.quotes[0].percentChange24h)}%"
+                holder.binding.topCurrencyChangeTextView.text = "+ ${String.format("%.02f", item.percentChange24h)}%"
             }
         else{
                 holder.binding.topCurrencyChangeTextView.setTextColor(context.resources.getColor(R.color.red))
-                holder.binding.topCurrencyChangeTextView.text = " ${String.format("%.02f", item.quotes[0].percentChange24h)}%"
+                holder.binding.topCurrencyChangeTextView.text = " ${String.format("%.02f", item.percentChange24h)}%"
 
             }
 

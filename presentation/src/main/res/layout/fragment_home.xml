@@ -26,6 +26,7 @@
             android:src="@drawable/banner" />
     </androidx.cardview.widget.CardView>
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/topCurrencyRecyclerView"
         android:layout_width="match_parent"

@@ -1,6 +1,6 @@
-package com.example.cryptocurrencyapp.fragment
+package com.example.cryptocurrencyapp.fragment.detailsFragment
 
-import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,50 +8,79 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatButton
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.example.cryptocurrencyapp.InternetConnectionCheck
+import com.example.cryptocurrencyapp.MainActivity
 import com.example.cryptocurrencyapp.R
 import com.example.cryptocurrencyapp.databinding.FragmentDetailsBinding
-import com.example.domain.model.CryptoCurrency
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.example.domain.model.CryptoCurrencyData
+import com.google.android.material.snackbar.Snackbar
 
 
 class DetailsFragment : Fragment() {
 
-     lateinit var binding: FragmentDetailsBinding
+     private lateinit var binding: FragmentDetailsBinding
+
+     private lateinit var viewModel: DetailsViewModel
 
      private val item: DetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentDetailsBinding.inflate(layoutInflater)
 
-        val data : CryptoCurrency = item.data!!
+        viewModel = ViewModelProvider(this, DetailsViewModelFactory(requireContext()))
+            .get(DetailsViewModel::class.java)
 
-        setUpDetails(data)
+        val data : CryptoCurrencyData? = item.data
 
-        loadChart(data)
 
-        setButtonOnClick(data)
+        if (data != null) {
+            setUpDetails(data)
 
-        getDetailsList(data)
+            loadChart(data)
 
-        addToWatchList(data)
+            setButtonOnClick(data)
+
+            getDetailsList(data)
+
+            addToWatchList(data)
+
+
+
+        }
+
 
         return binding.root
     }
 
-    var watchList: ArrayList<String>? = null
-    var watchListIsChecked = false
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val internetStatus = InternetConnectionCheck(requireContext()).internetConnection()
+        if (!internetStatus){
+            val snackbar: Snackbar = Snackbar.make(requireView(),"No Internet Connection, please check your connection", Snackbar.LENGTH_SHORT)
+            snackbar.setActionTextColor(Color.BLACK)
+                .show()
+        }
 
-    private fun addToWatchList(data: CryptoCurrency) {
-        readData()
+    }
 
-        watchListIsChecked = if (watchList!!.contains(data.symbol)){
+    //private var watchList: ArrayList<String>? = null
+    private var watchListIsChecked = false
+
+    private fun addToWatchList(
+        data: CryptoCurrencyData
+    ) {
+        viewModel.readWatchList()
+
+        val watchList = viewModel.getWatchList()
+
+        watchListIsChecked = if (watchList.contains(data.symbol)){
             binding.addWatchlistButton.setImageResource(R.drawable.ic_star)
             true
         }
@@ -63,11 +92,11 @@ class DetailsFragment : Fragment() {
         binding.addWatchlistButton.setOnClickListener{
             watchListIsChecked =
                 if (!watchListIsChecked){
-                    if (!watchList!!.contains(data.symbol)){
+                    if (!watchList.contains(data.symbol)){
 
-                        watchList!!.add(data.symbol)
+                        watchList.add(data.symbol)
                     }
-                    storeData()
+                    viewModel.storeWatchList()
                     binding.addWatchlistButton.setImageResource(R.drawable.ic_star)
 
 
@@ -75,32 +104,19 @@ class DetailsFragment : Fragment() {
                 }
             else{
                     binding.addWatchlistButton.setImageResource(R.drawable.ic_star_outline)
-                    watchList!!.remove(data.symbol)
-                    storeData()
+                    watchList.remove(data.symbol)
+                    viewModel.storeWatchList()
 
                 false
                 }
         }
+
+        binding.backStackButton.setOnClickListener{
+            (activity as MainActivity).supportFragmentManager.popBackStack()
+        }
     }
 
-    private fun storeData(){
-        val sharedPreferences = requireContext().getSharedPreferences("watchlist", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        val gson = Gson()
-        val json = gson.toJson(watchList)
-        editor.putString("watchlist", json)
-        editor.apply()
-    }
-
-    private fun readData() {
-        val sharedPreferences = requireContext().getSharedPreferences("watchlist", Context.MODE_PRIVATE)
-        val gson = Gson()
-        val json = sharedPreferences.getString("watchlist", ArrayList<String>().toString())
-        val type = object : TypeToken<ArrayList<String>>(){}.type
-        watchList = gson.fromJson(json, type)
-    }
-
-    private fun setButtonOnClick(item: CryptoCurrency) {
+    private fun setButtonOnClick(item: CryptoCurrencyData) {
         val oneMonth = binding.button
         val oneWeek = binding.button1
         val oneDay = binding.button2
@@ -130,7 +146,7 @@ class DetailsFragment : Fragment() {
     private fun loadChartData(
         it: View?,
         s: String,
-        item: CryptoCurrency,
+        item: CryptoCurrencyData,
         oneDay: AppCompatButton,
         oneMonth: AppCompatButton,
         oneWeek: AppCompatButton,
@@ -166,7 +182,7 @@ class DetailsFragment : Fragment() {
         oneHour.background = null
     }
 
-    private fun loadChart(item: CryptoCurrency) {
+    private fun loadChart(item: CryptoCurrencyData) {
         binding.detaillChartWebView.settings.javaScriptEnabled = true
         binding.detaillChartWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
 
@@ -178,57 +194,57 @@ class DetailsFragment : Fragment() {
         )
     }
 
-    private fun setUpDetails(data: CryptoCurrency) {
+    private fun setUpDetails(data: CryptoCurrencyData) {
         binding.detailSymbolTextView.text = data.symbol
 
         Glide.with(requireContext()).load("https://s2.coinmarketcap.com/static/img/coins/64x64/" + data.id + ".png")
             .thumbnail(Glide.with(requireContext()).load(R.drawable.spinner))
             .into(binding.detailImageView)
 
-        binding.detailPriceTextView.text = String.format("$%.02f", data.quotes[0].price)
+        binding.detailPriceTextView.text = String.format("$%.02f", data.price)
 
-        if (data.quotes[0].percentChange24h >0){
+        if (data.percentChange24h >0){
 
             binding.detailChangeTextView.setTextColor(requireContext().resources.getColor(R.color.green))
             binding.detailChangeImageView.setImageResource(R.drawable.ic_caret_up)
-            binding.detailChangeTextView.text = "+ ${String.format("%.02f", data.quotes[0].percentChange24h)}%"
+            binding.detailChangeTextView.text = "+ ${String.format("%.02f", data.percentChange24h)}%"
         }
         else{
             binding.detailChangeTextView.setTextColor(requireContext().resources.getColor(R.color.red))
             binding.detailChangeImageView.setImageResource(R.drawable.ic_caret_down)
-            binding.detailChangeTextView.text = " ${String.format("%.02f", data.quotes[0].percentChange24h)}%"
+            binding.detailChangeTextView.text = " ${String.format("%.02f", data.percentChange24h)}%"
 
         }
 
 
     }
 
-    private fun getDetailsList(item : CryptoCurrency) {
+    private fun getDetailsList(item : CryptoCurrencyData) {
 
         binding.detailNameTextView.text = item.name
-        binding.detailMarketCapTextView.text = String.format("$%.0002f", item.quotes[0].marketCap)
-        binding.detailVolume.text = String.format("$%.0002f", item.quotes[0].volume24h)
-        binding.detailDominance.text = item.quotes[0].dominance.toString()
+        binding.detailMarketCapTextView.text = String.format("$%.0002f", item.quoteMarketCap)
+        binding.detailVolume.text = String.format("$%.0002f", item.volume24h)
+        binding.detailDominance.text = item.quoteDominance.toString()
 
-        if (item.quotes[0].percentChange7d >0){
+        if (item.percentChange7d >0){
 
             binding.detailPercentChange7d.setTextColor(resources.getColor(R.color.green))
-            binding.detailPercentChange7d.text = "+ ${String.format("%.02f", item.quotes[0].percentChange7d)}%"
+            binding.detailPercentChange7d.text = "+ ${String.format("%.02f", item.percentChange7d)}%"
         }
         else{
             binding.detailPercentChange7d.setTextColor(resources.getColor(R.color.red))
-            binding.detailPercentChange7d.text = " ${String.format("%.02f", item.quotes[0].percentChange7d)}%"
+            binding.detailPercentChange7d.text = " ${String.format("%.02f", item.percentChange7d)}%"
 
         }
 
-        if (item.quotes[0].percentChange30d >0){
+        if (item.percentChange30d >0){
 
             binding.detailPercentChange30d.setTextColor(resources.getColor(R.color.green))
-            binding.detailPercentChange30d.text = "+ ${String.format("%.02f", item.quotes[0].percentChange30d)}%"
+            binding.detailPercentChange30d.text = "+ ${String.format("%.02f", item.percentChange30d)}%"
         }
         else{
             binding.detailPercentChange30d.setTextColor(resources.getColor(R.color.red))
-            binding.detailPercentChange30d.text = " ${String.format("%.02f", item.quotes[0].percentChange30d)}%"
+            binding.detailPercentChange30d.text = " ${String.format("%.02f", item.percentChange30d)}%"
 
         }
         binding.detailTotalSupplyTextView.text = item.totalSupply.toString()
