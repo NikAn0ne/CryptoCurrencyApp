@@ -1,8 +1,6 @@
 package com.example.cryptocurrencyapp.fragment.homeFragment
 
 import android.content.Context
-import android.net.ConnectivityManager
-import androidx.core.content.getSystemService
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.data.API.ApiUtilities

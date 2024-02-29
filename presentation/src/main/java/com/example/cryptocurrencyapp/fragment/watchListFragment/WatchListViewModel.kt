@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.data.storage.WatchListStorage
+
 import com.example.domain.model.CryptoCurrencyData
 import com.example.domain.repository.MarketDataRepository
 import com.example.domain.useCases.GetMarketDataUseCase
@@ -15,9 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class WatchListViewModel(
-    getWatchListUseCase: GetWatchListUseCase,
-    getMarketDataUseCase: GetMarketDataUseCase, readWatchListUseCase: ReadWatchListUseCase,
-    repository: MarketDataRepository, watchListStorage: WatchListStorage
+    repository: MarketDataRepository
 ) : ViewModel() {
 
     private val _watchListItem = MutableLiveData<ArrayList<CryptoCurrencyData>>()
@@ -38,7 +36,7 @@ class WatchListViewModel(
         getMarketData()
         getWatchList()
 
-        //observeWatchList(readWatchListUseCase, getWatchListUseCase,getMarketDataUseCase)
+
 
     }
 

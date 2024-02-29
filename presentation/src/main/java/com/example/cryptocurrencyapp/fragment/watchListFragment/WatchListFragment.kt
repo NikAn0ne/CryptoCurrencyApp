@@ -8,19 +8,11 @@ import android.view.View.GONE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
+
 import com.example.cryptocurrencyapp.adapter.MarketAdapter
 import com.example.cryptocurrencyapp.databinding.FragmentWatchListBinding
-import com.example.data.API.ApiUtilities
-import com.example.data.repository.MarketDataRepositoryImpl
-import com.example.data.storage.SharedPrefStorage
+
 import com.example.domain.model.CryptoCurrencyData
-import com.example.domain.useCases.GetMarketDataUseCase
-import com.example.domain.useCases.GetWatchListUseCase
-import com.example.domain.useCases.ReadWatchListUseCase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class WatchListFragment : Fragment() {
 
@@ -47,7 +39,7 @@ class WatchListFragment : Fragment() {
 
         val watchList = viewModel.getWatchList()
         Log.d("SharedPref", "Fragment $watchList")
-                /*val marketData = viewModel.getMarketData()*/
+
 
         viewModel.marketData.observe(viewLifecycleOwner){
             if (it != null)

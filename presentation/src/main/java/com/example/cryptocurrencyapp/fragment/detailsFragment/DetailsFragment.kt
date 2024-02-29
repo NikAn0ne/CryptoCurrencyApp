@@ -15,15 +15,7 @@ import com.example.cryptocurrencyapp.InternetConnectionCheck
 import com.example.cryptocurrencyapp.MainActivity
 import com.example.cryptocurrencyapp.R
 import com.example.cryptocurrencyapp.databinding.FragmentDetailsBinding
-import com.example.cryptocurrencyapp.fragment.watchListFragment.WatchListViewModel
-import com.example.cryptocurrencyapp.fragment.watchListFragment.WatchListViewModelFactory
-import com.example.data.API.ApiUtilities
-import com.example.data.repository.MarketDataRepositoryImpl
-import com.example.data.storage.SharedPrefStorage
 import com.example.domain.model.CryptoCurrencyData
-import com.example.domain.useCases.GetWatchListUseCase
-import com.example.domain.useCases.ReadWatchListUseCase
-import com.example.domain.useCases.StoreWatchListUseCase
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -69,7 +61,7 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val internetStatus = InternetConnectionCheck(requireContext()).internet_connection()
+        val internetStatus = InternetConnectionCheck(requireContext()).internetConnection()
         if (!internetStatus){
             val snackbar: Snackbar = Snackbar.make(requireView(),"No Internet Connection, please check your connection", Snackbar.LENGTH_SHORT)
             snackbar.setActionTextColor(Color.BLACK)

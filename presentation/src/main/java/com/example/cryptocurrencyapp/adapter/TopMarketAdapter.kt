@@ -10,7 +10,6 @@ import com.bumptech.glide.Glide
 import com.example.cryptocurrencyapp.R
 import com.example.cryptocurrencyapp.databinding.TopCurrencyLayoutBinding
 import com.example.cryptocurrencyapp.fragment.homeFragment.HomeFragmentDirections
-import com.example.cryptocurrencyapp.fragment.homeFragment.HomeViewModel
 import com.example.domain.model.CryptoCurrencyData
 
 class TopMarketAdapter(var context: Context, var list: List<CryptoCurrencyData>) : RecyclerView.Adapter<TopMarketAdapter.TopMarketViewHolder>() {
