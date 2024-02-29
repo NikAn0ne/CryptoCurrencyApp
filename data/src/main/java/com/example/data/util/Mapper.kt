@@ -26,3 +26,6 @@ fun CryptoCurrency.toDomain() : CryptoCurrencyData{
 
 
 
+
+
+
