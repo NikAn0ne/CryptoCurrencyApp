@@ -15,9 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class WatchListViewModel(
-    getWatchListUseCase: GetWatchListUseCase,
-    getMarketDataUseCase: GetMarketDataUseCase, readWatchListUseCase: ReadWatchListUseCase,
-    repository: MarketDataRepository, watchListStorage: WatchListStorage
+    repository: MarketDataRepository
 ) : ViewModel() {
 
     private val _watchListItem = MutableLiveData<ArrayList<CryptoCurrencyData>>()

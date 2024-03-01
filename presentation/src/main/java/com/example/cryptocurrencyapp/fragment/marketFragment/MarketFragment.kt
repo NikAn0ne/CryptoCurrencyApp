@@ -10,18 +10,9 @@ import android.view.View
 import android.view.View.GONE
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import com.example.cryptocurrencyapp.adapter.MarketAdapter
 import com.example.cryptocurrencyapp.databinding.FragmentMarketBinding
-import com.example.data.API.ApiUtilities
-import com.example.data.repository.MarketDataRepositoryImpl
-import com.example.data.storage.SharedPrefStorage
 import com.example.domain.model.CryptoCurrencyData
-import com.example.domain.useCases.GetMarketDataUseCase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.Locale
 
 

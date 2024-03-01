@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.data.API.ApiUtilities
 import com.example.data.repository.MarketDataRepositoryImpl
 import com.example.data.storage.SharedPrefStorage
-import com.example.data.storage.local.CryptoCurrencyDao
 import com.example.data.storage.local.MarketDataLocalRepositoryImpl
 
 class DetailsViewModelFactory(context: Context) : ViewModelProvider.Factory{

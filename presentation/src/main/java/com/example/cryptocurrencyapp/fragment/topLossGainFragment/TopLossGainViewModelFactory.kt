@@ -14,10 +14,9 @@ class TopLossGainViewModelFactory(context: Context): ViewModelProvider.Factory {
 
     private val repository by lazy { MarketDataRepositoryImpl(ApiUtilities.api,watchListStorage) }
 
-    private val getMarketDataUseCase by lazy { GetMarketDataUseCase(repository) }
 
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return TopLossGainViewModel(getMarketDataUseCase = getMarketDataUseCase, repository) as T
+        return TopLossGainViewModel(repository) as T
     }
 }

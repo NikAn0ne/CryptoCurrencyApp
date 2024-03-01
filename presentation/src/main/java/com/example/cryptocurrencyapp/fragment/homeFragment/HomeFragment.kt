@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.example.cryptocurrencyapp.InternetConnectionCheck
-import com.example.cryptocurrencyapp.R
 import com.example.cryptocurrencyapp.adapter.TopLossGainPagerAdapter
 import com.example.cryptocurrencyapp.adapter.TopMarketAdapter
 import com.example.cryptocurrencyapp.databinding.FragmentHomeBinding
@@ -103,47 +102,6 @@ class HomeFragment : Fragment() {
         }
 
     }
-
-    /*private fun getTopCurrencyList() {
-        viewModel.list.observe(viewLifecycleOwner) {
-
-            binding.topCurrencyRecyclerView.adapter = it.let {
-                TopMarketAdapter(requireContext(), it)
-            }
-        }*/
-
-
-        /* lifecycleScope.launch(Dispatchers.IO) {
-             withContext(Dispatchers.Main) {
-                 binding.topCurrencyRecyclerView.adapter =
-                     getMarketDataUseCase.getMarketData()?.let {
-                         TopMarketAdapter(
-                             requireContext(), it
-                         )
-                     }
-             }
-         }*/
-
-        /*else{
-                val snackbar: Snackbar = Snackbar.make(requireView(),"No Internet Connection", Snackbar.LENGTH_SHORT)
-
-                snackbar.setActionTextColor(Color.BLACK)
-                snackbar.setAction(R.string.try_again, View.OnClickListener {
-                }).show()
-            }
-            }*/
-
-
-         fun internet_connection(): Boolean {
-        //Check if connected to internet, output accordingly
-        val cm =
-            context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork = cm.activeNetworkInfo
-        return activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting
-    }
-
-
 
     }
 

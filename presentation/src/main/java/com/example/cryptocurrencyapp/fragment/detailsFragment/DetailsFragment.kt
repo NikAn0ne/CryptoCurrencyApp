@@ -15,17 +15,7 @@ import com.example.cryptocurrencyapp.InternetConnectionCheck
 import com.example.cryptocurrencyapp.MainActivity
 import com.example.cryptocurrencyapp.R
 import com.example.cryptocurrencyapp.databinding.FragmentDetailsBinding
-import com.example.cryptocurrencyapp.fragment.watchListFragment.WatchListViewModel
-import com.example.cryptocurrencyapp.fragment.watchListFragment.WatchListViewModelFactory
-import com.example.data.API.ApiUtilities
-import com.example.data.repository.MarketDataRepositoryImpl
-import com.example.data.storage.SharedPrefStorage
-import com.example.data.storage.local.CryptoCurrencyDao
-import com.example.data.storage.local.CryptoCurrencyDatabase
 import com.example.domain.model.CryptoCurrencyData
-import com.example.domain.useCases.GetWatchListUseCase
-import com.example.domain.useCases.ReadWatchListUseCase
-import com.example.domain.useCases.StoreWatchListUseCase
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -37,15 +27,12 @@ class DetailsFragment : Fragment() {
 
      private val item: DetailsFragmentArgs by navArgs()
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentDetailsBinding.inflate(layoutInflater)
-
 
         viewModel = ViewModelProvider(this, DetailsViewModelFactory(requireContext()))
             .get(DetailsViewModel::class.java)
