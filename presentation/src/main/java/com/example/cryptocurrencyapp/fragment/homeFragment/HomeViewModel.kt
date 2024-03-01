@@ -18,7 +18,7 @@ class HomeViewModel(getMarketDataUseCase: GetMarketDataUseCase) : ViewModel() {
 
     init {
         getList()
-      // Log.d("vmList", list.value.toString())
+        //Log.d("vmList", list.value.toString())
     }
 
 

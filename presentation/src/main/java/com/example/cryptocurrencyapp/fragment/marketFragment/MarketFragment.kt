@@ -10,12 +10,9 @@ import android.view.View
 import android.view.View.GONE
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-
 import com.example.cryptocurrencyapp.adapter.MarketAdapter
 import com.example.cryptocurrencyapp.databinding.FragmentMarketBinding
-
 import com.example.domain.model.CryptoCurrencyData
-
 import java.util.Locale
 
 
@@ -30,6 +27,8 @@ class MarketFragment : Fragment() {
     private lateinit var adapter: MarketAdapter
 
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,7 +36,7 @@ class MarketFragment : Fragment() {
 
         binding = FragmentMarketBinding.inflate(layoutInflater)
 
-        viewModel = ViewModelProvider(this, MarketViewModelFactory(requireContext()))
+        viewModel = ViewModelProvider(this,MarketViewModelFactory(requireContext()))
             .get(MarketViewModel::class.java)
 
         list = listOf()
@@ -45,14 +44,14 @@ class MarketFragment : Fragment() {
         adapter = MarketAdapter(requireContext(), list, "market")
         binding.currencyRecyclerView.adapter = adapter
 
-        viewModel.list.observe(viewLifecycleOwner) {
-            if (it != null) {
-                list = it
+                viewModel.list.observe(viewLifecycleOwner){
+                    if(it != null) {
+                        list = it
 
-                adapter.updateData(list)
-                binding.spinKitView.visibility = GONE
-            }
-        }
+                        adapter.updateData(list)
+                        binding.spinKitView.visibility = GONE
+                    }
+                }
 
         searchCoin()
 
@@ -61,8 +60,8 @@ class MarketFragment : Fragment() {
 
     lateinit var searchText: String
 
-    private fun searchCoin() {
-        binding.searchEditText.addTextChangedListener(object : TextWatcher {
+    private fun searchCoin(){
+        binding.searchEditText.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
@@ -80,14 +79,14 @@ class MarketFragment : Fragment() {
         })
     }
 
-    private fun updateRecyclerView() {
+    private fun updateRecyclerView(){
         val data = ArrayList<CryptoCurrencyData>()
 
-        for (item in list) {
+        for (item in list){
             val coinName = item.name.lowercase(Locale.getDefault())
             val coinSymbol = item.symbol.lowercase(Locale.getDefault())
 
-            if (coinName.contains(searchText) || coinSymbol.contains(searchText)) {
+            if (coinName.contains(searchText) || coinSymbol.contains(searchText)){
                 data.add(item)
             }
         }

@@ -49,7 +49,11 @@ class DetailsFragment : Fragment() {
 
             getDetailsList(data)
 
-            addToWatchList(data)
+            viewModel.getLocalWatchList()
+
+
+                addToWatchList(data)
+
 
 
 
@@ -76,36 +80,33 @@ class DetailsFragment : Fragment() {
     private fun addToWatchList(
         data: CryptoCurrencyData
     ) {
-        viewModel.readWatchList()
 
-        val watchList = viewModel.getWatchList()
+        viewModel.watchList.observe(viewLifecycleOwner){
+            for (watchListItem in it){
+                if (watchListItem.symbol == data.symbol){
+                    binding.addWatchlistButton.setImageResource(R.drawable.ic_star)
+                    break
+                }
+                else{
+                    binding.addWatchlistButton.setImageResource(R.drawable.ic_star_outline)
+                }
+            }
+        }
 
-        watchListIsChecked = if (watchList.contains(data.symbol)){
-            binding.addWatchlistButton.setImageResource(R.drawable.ic_star)
-            true
-        }
-        else{
-            binding.addWatchlistButton.setImageResource(R.drawable.ic_star_outline)
-            false
-        }
+
 
         binding.addWatchlistButton.setOnClickListener{
             watchListIsChecked =
                 if (!watchListIsChecked){
-                    if (!watchList.contains(data.symbol)){
-
-                        watchList.add(data.symbol)
-                    }
-                    viewModel.storeWatchList()
-                    binding.addWatchlistButton.setImageResource(R.drawable.ic_star)
+                            viewModel.addToWatchList(data)
+                            binding.addWatchlistButton.setImageResource(R.drawable.ic_star)
 
 
                     true
                 }
             else{
                     binding.addWatchlistButton.setImageResource(R.drawable.ic_star_outline)
-                    watchList.remove(data.symbol)
-                    viewModel.storeWatchList()
+                    viewModel.deleteWatchList(data)
 
                 false
                 }

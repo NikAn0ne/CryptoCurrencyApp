@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.data.API.ApiUtilities
 import com.example.data.repository.MarketDataRepositoryImpl
 import com.example.data.storage.SharedPrefStorage
+import com.example.data.storage.local.MarketDataLocalRepositoryImpl
+
 
 class WatchListViewModelFactory(context: Context): ViewModelProvider.Factory {
 
@@ -13,12 +15,9 @@ class WatchListViewModelFactory(context: Context): ViewModelProvider.Factory {
 
     private val repository by lazy {MarketDataRepositoryImpl(ApiUtilities.api, watchListStorage)}
 
-    /*private val getMarketDataUseCase by lazy {GetMarketDataUseCase(repository)}
+    private val localRepository by lazy { MarketDataLocalRepositoryImpl(context) }
 
-    private val readWatchListUseCase by lazy {ReadWatchListUseCase(repository)}
-
-    private val getWatchListUseCase by lazy {GetWatchListUseCase(repository)}*/
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return WatchListViewModel(repository) as T
+        return WatchListViewModel(repository,localRepository) as T
     }
 }
