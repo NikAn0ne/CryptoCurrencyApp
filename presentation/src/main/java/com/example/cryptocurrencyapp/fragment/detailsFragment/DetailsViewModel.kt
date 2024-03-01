@@ -40,21 +40,16 @@ class DetailsViewModel(repository: MarketDataRepository,localRepository: MarketD
         return result
     }
 
-    fun storeWatchList(){
-        storeWatchListUseCase.storeWatchList()
-    }
-
     fun addToWatchList(cryptoData: CryptoCurrencyData) = viewModelScope.launch{
 
             watchListUseCase.addToWatchList(cryptoData)
 
     }
 
-    fun getWatchListLocal(){
+    fun getLocalWatchList() = viewModelScope.launch(Dispatchers.IO){
 
-        viewModelScope.launch(Dispatchers.IO) {
             watchList.postValue(watchListUseCase.getWatchList())
-        }
+
 
 
 

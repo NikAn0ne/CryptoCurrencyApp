@@ -49,11 +49,10 @@ class DetailsFragment : Fragment() {
 
             getDetailsList(data)
 
-            viewModel.getWatchListLocal()
+            viewModel.getLocalWatchList()
 
-            viewModel.watchList.observe(viewLifecycleOwner){
-                addToWatchList(data, it)
-            }
+
+                addToWatchList(data)
 
 
 
@@ -79,20 +78,22 @@ class DetailsFragment : Fragment() {
     private var watchListIsChecked = false
 
     private fun addToWatchList(
-        data: CryptoCurrencyData,
-        localWatchList: List<CryptoCurrencyData>
+        data: CryptoCurrencyData
     ) {
 
-            for (watchListItem in localWatchList){
-                watchListIsChecked = if (watchListItem.symbol.contains(data.symbol)){
+        viewModel.watchList.observe(viewLifecycleOwner){
+            for (watchListItem in it){
+                if (watchListItem.symbol == data.symbol){
                     binding.addWatchlistButton.setImageResource(R.drawable.ic_star)
-                    true
+                    break
                 }
                 else{
                     binding.addWatchlistButton.setImageResource(R.drawable.ic_star_outline)
-                    false
                 }
             }
+        }
+
+
 
         binding.addWatchlistButton.setOnClickListener{
             watchListIsChecked =
