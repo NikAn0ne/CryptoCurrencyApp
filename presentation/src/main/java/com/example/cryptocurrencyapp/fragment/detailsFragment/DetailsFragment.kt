@@ -20,6 +20,8 @@ import com.example.cryptocurrencyapp.fragment.watchListFragment.WatchListViewMod
 import com.example.data.API.ApiUtilities
 import com.example.data.repository.MarketDataRepositoryImpl
 import com.example.data.storage.SharedPrefStorage
+import com.example.data.storage.local.CryptoCurrencyDao
+import com.example.data.storage.local.CryptoCurrencyDatabase
 import com.example.domain.model.CryptoCurrencyData
 import com.example.domain.useCases.GetWatchListUseCase
 import com.example.domain.useCases.ReadWatchListUseCase
@@ -35,12 +37,15 @@ class DetailsFragment : Fragment() {
 
      private val item: DetailsFragmentArgs by navArgs()
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentDetailsBinding.inflate(layoutInflater)
+
 
         viewModel = ViewModelProvider(this, DetailsViewModelFactory(requireContext()))
             .get(DetailsViewModel::class.java)
@@ -57,7 +62,12 @@ class DetailsFragment : Fragment() {
 
             getDetailsList(data)
 
-            addToWatchList(data)
+            viewModel.getWatchListLocal()
+
+            viewModel.watchList.observe(viewLifecycleOwner){
+                addToWatchList(data, it)
+            }
+
 
 
 
@@ -82,38 +92,33 @@ class DetailsFragment : Fragment() {
     private var watchListIsChecked = false
 
     private fun addToWatchList(
-        data: CryptoCurrencyData
+        data: CryptoCurrencyData,
+        localWatchList: List<CryptoCurrencyData>
     ) {
-        viewModel.readWatchList()
 
-        val watchList = viewModel.getWatchList()
-
-        watchListIsChecked = if (watchList.contains(data.symbol)){
-            binding.addWatchlistButton.setImageResource(R.drawable.ic_star)
-            true
-        }
-        else{
-            binding.addWatchlistButton.setImageResource(R.drawable.ic_star_outline)
-            false
-        }
+            for (watchListItem in localWatchList){
+                watchListIsChecked = if (watchListItem.symbol.contains(data.symbol)){
+                    binding.addWatchlistButton.setImageResource(R.drawable.ic_star)
+                    true
+                }
+                else{
+                    binding.addWatchlistButton.setImageResource(R.drawable.ic_star_outline)
+                    false
+                }
+            }
 
         binding.addWatchlistButton.setOnClickListener{
             watchListIsChecked =
                 if (!watchListIsChecked){
-                    if (!watchList.contains(data.symbol)){
-
-                        watchList.add(data.symbol)
-                    }
-                    viewModel.storeWatchList()
-                    binding.addWatchlistButton.setImageResource(R.drawable.ic_star)
+                            viewModel.addToWatchList(data)
+                            binding.addWatchlistButton.setImageResource(R.drawable.ic_star)
 
 
                     true
                 }
             else{
                     binding.addWatchlistButton.setImageResource(R.drawable.ic_star_outline)
-                    watchList.remove(data.symbol)
-                    viewModel.storeWatchList()
+                    viewModel.deleteWatchList(data)
 
                 false
                 }
