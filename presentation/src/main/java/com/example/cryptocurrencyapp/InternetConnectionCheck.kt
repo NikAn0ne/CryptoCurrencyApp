@@ -7,7 +7,7 @@ import android.net.ConnectivityManager
 
 class InternetConnectionCheck (context: Context) {
     private val context = context
-    fun internet_connection(): Boolean {
+    fun internetConnection(): Boolean {
         //Check if connected to internet, output accordingly
         val cm =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

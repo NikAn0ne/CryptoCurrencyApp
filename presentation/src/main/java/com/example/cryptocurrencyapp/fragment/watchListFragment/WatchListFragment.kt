@@ -43,7 +43,7 @@ class WatchListFragment : Fragment() {
 
 
         viewModel.getLocalWatchList()
-        val internetStatus = InternetConnectionCheck(requireContext()).internet_connection()
+        val internetStatus = InternetConnectionCheck(requireContext()).internetConnection()
         if (internetStatus){
             viewModel.marketData.observe(viewLifecycleOwner){
                 Log.d(TAG, (it!= null).toString())
